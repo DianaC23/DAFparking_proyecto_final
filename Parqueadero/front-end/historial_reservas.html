@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow">
+    <title>Reportes e historial</title>
+    <link rel="stylesheet" href="style.css">
+    <!--Fuente descargada-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anonymous+Pro:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!--Diana-->
+    <!--Encabezado del sitio web-->
+    <header>
+        <!--Barra de navegación siempre dentro del header-->
+        <nav class="navegacion_principal">
+            <!--Lista no ordenada que agrupa los enlaces-->
+            <ul>
+                <!--li es cada elemento de la lista-->
+                <!--a es es link por ahora solo le pondremos # a los que aun no tenga pagina para que cuando le demos clic no e reinicie-->
+                <li><a href="./index.html"><img src="./IMG_DAF/DAF_LOGO.png" alt="Logo DAF" class="logo"></a></li>
+                <li><a href="./inicio_sesion.html">Iniciar sesión</a></li>
+                <li><a href="#">Registrarse</a></li>
+                <li><a href="#">Sobre nosotros</a></li>
+                <li><a href="#">contacto</a></li>
+            </ul>
+        </nav>
+    </header>
+
+            <!--Inicio de accesibilidad web-->
+        <div class="accesibilidad">
+            <button id="Aumentar"><strong> A+</strong></button>
+            <button id="Disminuir"><strong>A-</strong></button>
+            <button id="Contraste"><strong>◑</strong></button>
+            <button id="Dislexia"><strong>Ae</strong></button>
+            <button id="lector"><strong> ၊၊||၊</strong></button>
+            <button id="Recargar"><strong>⟳</strong></button>
+        </div>
+
+  <main class="reportes-historial">
+    <h2>Reportes e Historial</h2>
+    <p>Desde aquí puede generar, consultar y descargar reportes detallados sobre los ingresos, salidas y pagos realizados en el parqueadero DAF Solutions.</p>
+
+    <div class="formulario-reportes">
+      <div>
+        <label for="fechaInicial">Fecha Inicial</label>
+        <input type="date" id="fechaInicial">
+      </div>
+      <div>
+        <label for="fechaFinal">Fecha Final</label>
+        <input type="date" id="fechaFinal">
+      </div>
+      <div>
+        <label for="tipoVehiculo">Tipo de Vehículo</label>
+        <select id="tipoVehiculo">
+          <option value="Carro">Carro</option>
+          <option value="Moto">Moto</option>
+        </select>
+      </div>
+      <div>
+        <label for="placa">Placa</label>
+        <input type="text" id="placa" placeholder="Ej: XYZ369">
+      </div>
+    </div>
+
+    <button id="generarBtn">Generar Reporte</button>
+
+    <table id="tablaReportes" style="display:none;">
+      <thead>
+        <tr>
+          <th>Fecha</th>
+          <th>Hora de ingreso</th>
+          <th>Hora de salida</th>
+          <th>Valor cancelado</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <div id="acciones" style="display:none;">
+      <button onclick="window.print()">Imprimir</button>
+      <button onclick="alert('PDF enviado correctamente al correo registrado')">Enviar PDF</button>
+    </div>
+  </main>
+
+ <footer>
+        <div class="info">
+            <p>DAF Solutions S.A.S</p>
+            <p>calle 80 #28-45, Medellín, Colombia Tel: (+57) 312 678 9054</p>
+            <a href="#"><img src="./IMG_DAF/icons8-facebook-96.png" alt="icono de facebook" class="info_icono"></a>
+            <a href="#"><img src="./IMG_DAF/icons8-whatsapp-64.png" alt="icono de whatssap" class="info_icono"></a>
+            <a href="#"><img src="./IMG_DAF/icons8-instagram-64.png" alt="icono de instagram" class="info_icono"></a>
+        </div>
+        
+    </footer>
+</body>
+</html>
