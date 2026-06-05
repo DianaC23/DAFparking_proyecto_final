@@ -1,0 +1,25 @@
+.p-menubar .p-menuitem{
+margin-right: 40px;
+margin-left: 40px;
+}
+.p-menubar .p-menubar-root-list > .p-menuitem > .p-menuitem-content  .p-menuitem-text{
+    color:#94FDFF;
+}
+.p-menubar{
+    background-color: #00282A !important;
+}
+.p-menubar .p-menubar-root-list> .p-menuitem > .p-menuitem-content  .p-menuitem-text:hover{
+    color:#ffffff;
+}
+.p-menubar-start{
+    margin-left:40px ;
+    margin-right: 40px;
+}
+/*fondo*/
+.fondo{
+    min-height: 100vh;
+    background-image: url('../assets/parking_fondo.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
