@@ -3,24 +3,21 @@ import './inicio.css';
 //estilos
 import 'primereact/resources/themes/lara-dark-green/theme.css';
 import 'primereact/resources/primereact.min.css';
-
 //iconos
 import 'primeicons/primeicons.css';
 //menu
 import { Menubar } from 'primereact/menubar';
 //logo
 import logo from '../assets/DAF_LOGO.png';
-
-
-        
-        
+//panel
+import { Panel } from 'primereact/panel';
         
         
 //Elementos del menú
         const items =[
             {label: 'Precios'},
             {label: 'Ubicaciones' },
-            {label: 'sobre nosotros' },
+            {label: 'sobre nosotros', url :'#sobre-nosotros'},
             {label: 'contacto'},
             {label: 'Inicio de sesión',
                 className:  'menu-login'
@@ -32,7 +29,7 @@ function Inicio(){
     const start = (
                     <img src={logo}
                      alt="DAF_PARKING"
-                     height="50" />
+                     height="80" />
                 );
     
     return(
@@ -79,37 +76,65 @@ function Inicio(){
                         <p>Multiples metodos de pago.</p>
                     </div>
                 </section>
-                <section className='tarifas-container'>
-                    <h4>Tarifas</h4>
-                    <div className='tabla-tarifa'>
-                        <table>
-                            <tr>
+                <div className='contenedor-columnas' id='sobre-nosotros'>
+                    <div className='columna'>
+                    <Panel header="Sobre nosotros">
+                    <p className="m-0">
+                        Somos una empresa dedicada a ofrecer soluciones de estacionamiento seguras,<br/>
+                        cómodas y eficientes. Servicio al cliente excepcional y la máxima seguridad <br/>
+                        para tu vehículo. Entendemos que tu tranquilidad es lo más importante, por<br/>
+                        lo que trabajamos día a día para que dejes tu vehículo en las mejores manos.<br/></p>
+                        <p className="m-0">Brindamos un servicio confiable, accesible y ágil que optimice el iempo de <br/>nuestros
+                        usuarios, apoyados en tecnologia moderna y un equipo calificado.<br/></p>
+                        <p className="m-0">Deseamos consolidarnos con nuestro estacionamiento, siendo reconocidos por<br/> nuestra
+                        seguridad, eficiencia operativa y por mejorar la movilidad urbana<br/> de nuestra comunidad.</p>
+                        
+                        
+                    
+                </Panel>
+                </div>
+                <div className='columna'>
+                    <panel header = "Tarifas">
+                        <div className='tabla-tarifa'>
+                        <table className='tarifa'>
+                            <thead>
+                                <tr>
+                                    <th colSpan={3}style={{textAlign:'center'}}>Tarifas</th>
+                                </tr>
+                                <tr>
                                 <th>Tipo de vehiculo</th>
                                 <th>Hora</th>
                                 <th>Mensualidad</th>
                             </tr>
-                            <tr><td>Bicicleta</td>
-                            <td>1.500</td>
-                            <td>20.000</td></tr>
-                            <tr><td>Moto</td>
-                            <td>2.000</td>
-                            <td>30.000</td></tr>
-                            <tr><td>Carro</td>
-                            <td>5.000</td>
-                            <td>60.000</td></tr>
-                            <tr><td>Camión</td>
-                            <td>8.000</td>
-                            <td>100.000</td></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>Bicicleta</td>
+                                <td>1.500</td>
+                                <td>20.000</td></tr>
+                                <tr><td>Moto</td>
+                                <td>2.000</td>
+                                <td>30.000</td></tr>
+                                <tr><td>Carro</td>
+                                <td>5.000</td>
+                                <td>60.000</td></tr>
+                                <tr><td>Camión</td>
+                                <td>8.000</td>
+                                <td>100.000</td></tr> 
+                            </tbody>
                         </table>
                     </div>
-                </section>
+                    </panel>
+                    
+                </div>
+                </div>
+                
             </main>
             <footer>
                 <div className='footer-a'>
-                    <ul>
-                        <li>DAF SOLUTIONS S.A.S</li>
-                        <li>Calle 80 #28-45 Medellín, Colombia</li>
-                        <li>Tel: (+57) 312 678 9054</li>
+                    <ul className='footer-li'>
+                        <li >DAF SOLUTIONS S.A.S</li>
+                        <li >Calle 80 #28-45 Medellín, Colombia</li>
+                        <li >Tel: (+57) 312 678 9054</li>
                     </ul>
                 </div>
             </footer>
