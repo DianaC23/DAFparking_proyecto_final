@@ -1,0 +1,440 @@
+/*Paleta de colores
+#19545B verde oscuro
+#00282A verde super oscuro
+#94FDFF azul claro
+#00282ada Verde oscuro con transparencia
+*/
+*{
+    /*Para no moverlo con barra*/
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+body{
+    font-family: anonymous Pro;
+    background-image: url(./IMG_DAF/Fondo_DAF_Parqueadero.jpeg);
+    background-repeat:no-repeat ;/*Evita que la imagen se repita*/
+    background-size: cover;/*Hace que la imagen ocupe toda la pantalla*/
+}/*Inicio index*/
+/*inico de estilos de navegación*/
+.navegacion_principal{
+background-color: #00282A;
+}
+.logo{
+    width: 70px;
+    height: auto;
+    margin-left: 10px;
+    margin-right: 180px;
+    margin-top: -30px;
+}
+.navegacion_principal ul{
+    padding-top: 40px;
+    list-style: none;
+    display: inline-flex;
+    justify-content: center;
+}
+.navegacion_principal a{
+    text-decoration: none;
+    color: #94FDFF;
+    margin: 50px;
+}
+/*fin de estilos de navegación*/
+/*Inicio accesibilidad web*/
+.accesibilidad button{
+    padding: 2px;
+    margin: 10px;
+    background-color: #94FDFF;
+    color: #19545B;
+    display: flow;
+    justify-content: end;
+    border-radius: 4px;
+}
+.accesibilidad{
+    position: fixed;
+    top: 100px;
+    right: 10px;
+    padding: 10px;
+    display: grid;
+    grid-template-columns: repeat(2, auto);/*dos columnas*/
+    gap: 8px;/*espacio entre botones*/
+    z-index: 1000;
+}
+/*Fin accesibilidad web*/
+/*Inicio primer contenedor*/
+.reserva{
+color: #94FDFF;
+background-color: #00282ada;
+display:flex;
+flex-direction: column;
+align-items: center;
+gap: 15px;
+margin-top: 10px;
+margin-left:70px;
+margin-right:70px;
+padding: 20px;
+padding-top: 30px;
+padding-bottom: 30px;
+}
+.b_reserva a{
+    text-decoration: none;
+    color: #94FDFF;
+}
+.b_reserva{
+    border-color: linear-gradient(#19545B,#00282A);
+   margin-top: 10px;
+    padding: 10px;
+    background:linear-gradient(#19545B,#00282A);
+    border-radius: 15px;
+}
+/*Final primer contenedor*/
+/*Inicio de servicios*/
+.servicio-tarifas{
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 60px;
+    flex-wrap: wrap;
+    padding: 40px 0;
+}
+.servicios, .tarifas{
+    background-color: #00282ada;
+    border-radius: 1px;
+    width: 400px;
+    text-align: center;
+    padding: 20px;
+    color: #94FDFF;
+}
+.sub{
+    background-color: #19545B;
+    color: #94FDFF;
+    display: inline-block;
+    padding: 10px 25px;
+    border-radius: 25px;
+    margin-bottom: 20px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 20px;
+}
+.icono_servicios{
+    width: 50px;
+    height: auto;
+    margin-bottom: 10px;
+}
+table td{
+    padding: 10px;
+    font-size: 16px;
+    color: #94FDFF;
+}
+.caja{
+    margin-top: 10px;
+    color: #94FDFF;
+    background-color: rgba(0, 40, 42, 0.85);
+    width: 450px;
+    display: inline-block;
+    padding: 20px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.4);
+    text-align: center;
+    backdrop-filter: blur(5px);
+    padding-bottom: 50px;
+}
+.servicio-contenidos{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    justify-items: center;
+}
+.servicio-item{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+.tabla-tarifas{
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+}
+.tabla-tarifas td{
+    padding: 10px;
+}
+.tabla-tarifas th{
+    font-weight: bold;
+    padding-bottom: 10px;
+}
+/*Final de servicios*/
+/*Final de index*/
+/*inicio de información*/
+.info{
+    color: #94FDFF;
+    display: flex;
+    justify-content: space-around;
+}
+.info_icono{
+    width: 20px;
+    height: auto;
+}
+/*fin de información*/
+/*Inicio Estilo de consultar disponibilidad*/
+header nav a:hover {
+      text-decoration: underline;
+    }
+
+    .main-disponibilidad {
+      color: #94FDFF;
+      text-align: center;
+      background-color: #00282ada;
+      margin: 50px auto;
+      padding: 20px;
+      width: 80%;
+      border-radius: 10px;
+    }
+
+    .legend {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+
+    .color-box {
+      width: 20px;
+      height: 20px;
+      display: inline-block;
+      border: 1px solid #fff;
+    }
+
+    .ocupado {
+      background-color: #003f47;
+    }
+
+    .disponible {
+      background-color: #7fffd4;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 20px;
+      justify-items: center;
+    }
+
+    .espacio {
+      width: 60px;
+      height: 60px;
+      border-radius: 8px;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 12px;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .espacio:hover {
+      transform: scale(1.1);
+    }
+
+    footer {
+      background-color: #00282ada;
+      text-align: center;
+      padding: 10px;
+      font-size: 13px;
+    }
+
+    footer a {
+      color: #aef9ff;
+      text-decoration: none;
+      margin: 0 5px;
+    }
+    .campo input, .campo option{
+       padding: 5px;
+        border-color: #aef9ff;
+        background-color: #003f47;
+        border-radius: 10px;
+        margin: 10px;
+    }
+    .campo select{
+       padding: 5px;
+        border-color: #aef9ff;
+        background-color: #003f47;
+        border-radius: 10px;
+        margin: 10px;
+        color: #aef9ff;
+    }
+    #horaIngreso, #horaSalida, #tarifa, .pago-btn, .botones-factura button{
+       padding: 5px;
+        border-color: #aef9ff;
+        background-color: #003f47;
+        border-radius: 10px;
+        margin: 10px;
+        color: #aef9ff;
+    }
+    .campo label{
+        padding: 10px;
+    }
+/*Find Estilo de consultar disponibilidad*/
+/*Inicio de estilos en pagos*/
+.contenedor-factura{
+    margin: 10px 0px 50px 20px;
+    display: grid;
+    color: #aef9ff;
+    justify-content: center;
+}
+/*fin de estilos en pagos*/
+/*Inicio de historial_reservas*/
+
+    .reportes-historial {
+      text-align: center;
+      background-color:#00282ada;
+      margin: 50px auto;
+      padding: 80px;
+      width: 80%;
+      border-radius: 10px;
+      color: #aef9ff;
+    }
+
+    h2 {
+      margin-bottom: 10px;
+    }
+
+    p {
+      font-size: 14px;
+      margin-bottom: 30px;
+    }
+
+    .formulario-reportes {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      justify-items: center;
+      margin-bottom: 50px;
+    }
+
+    .formulario div {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    label {
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    input, select {
+      padding: 8px;
+      border-radius: 5px;
+      border: 1px solid #aef9ff;
+      background-color: #19545B;
+      color: #aef9ff;
+      width: 200px;
+    }
+
+    button {
+      background-color: transparent;
+      border: 2px solid #aef9ff;
+      color: #aef9ff;
+      padding: 10px 20px;
+      border-radius: 10px;
+      font-size: 16px;
+      cursor: pointer;
+      margin: 10px;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background-color: #aef9ff;
+      color: #003f47;
+    }
+
+    table {
+      margin: 30px auto;
+      border-collapse: collapse;
+      width: 80%;
+    }
+    #placa{
+        color: #aef9ff;
+    }
+/*Final de historial_reservas*/
+/*Inicio de iniciar sesión*/
+.main-inicia-sesion{
+    display: grid;
+    justify-content: center;
+    color: #aef9ff;
+    background-color: #00282ada;
+    margin: 100px 400px 100px 400px;
+    padding: 10px 0px 60px 0px;
+}
+.formu-inicio-sesion{
+    margin-bottom: 90px;
+    display: grid;
+    justify-content: center;
+}
+.formu-inicio-sesion input{
+    background-color: #19545B;
+    color: #aef9ff;
+    margin: 20px 20px 1px 20px;
+    padding: 40px;
+}
+.r-datos{
+    display: flex;
+    justify-content: end;
+    margin: 1px 20px 40px 20px;
+    color: #aef9ff;
+    text-decoration: none;
+}
+input::placeholder{
+    color: #aef9ff;
+}
+.subtitulo-inicia-sesion{
+    display: grid;
+    margin-bottom: 60px;
+    justify-content: center;
+}
+.datos-inicio{
+    margin-left: 50px;
+    border-color: #19545B;
+    padding: 10px 20px;
+    border-radius: 10px;
+    color:#aef9ff;
+    background-color: #003f47;
+}
+.datos-inicio::placeholder{
+    color: #aef9ff;
+    opacity: 1;
+}
+.btn-inicio-sesion{
+    border-radius: 10px;
+    border-style: solid;
+    border-width: 2px;
+    border-color: #aef9ff;
+    background-color: #19545B;
+    display: grid;
+    justify-content: center;
+    margin-left: 50px;
+}
+/*Final de iniciar sesión*/
+/*Inicio panel de control*/
+.panel-control-usuario{
+    display:grid;
+    justify-content: flex-start;
+}
+.panel-control-usuario a{
+    text-decoration: none;
+    color: #aef9ff;
+    list-style: none;
+}
+.panel-control-usuario ul{
+    list-style-type: none;
+    margin: 50px auto;
+}
+.panel-control-usuario li{
+    padding: 20px;
+    background-color: #19545B;
+}
+/*Final panel de control*/
+/*Inicio registro de entrada*/
+
+/*Fin registro de entrada*/
