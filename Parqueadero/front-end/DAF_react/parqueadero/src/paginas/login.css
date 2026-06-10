@@ -1,0 +1,74 @@
+/*Paleta de colores: #19545B, #00282A Y #94FDFF*/
+*{
+    box-sizing: border-box;
+}
+/*fondo*/
+.fondo{
+    min-height: 100vh;
+    background-image: url('../assets/parking_fondo.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+/*main*/
+div.card{
+    background: linear-gradient(135deg, #19545B 50%,#00282A 50%);
+    color: #94FDFF;
+    padding: 20px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    max-width: 400px;
+    margin: 40px auto;
+
+}
+h1, p{
+    display: flex;
+    justify-content: center;
+}
+h3{
+    display: flex;
+    justify-content: center;
+}
+.p-button{
+    background-color: #94FDFF;
+    display: flex;
+    justify-content: center;
+}
+div.login-user{
+    margin: 30px;
+    gap: 20px;
+}
+
+button{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 100px;
+    gap: 20px;
+}
+input{
+    padding-right: 50px;
+}
+div.p-treeselect{
+    width: 95%;
+}
+i.pi.pi-car{
+    display: flex;
+    justify-content: center;
+}
+/*Footer*/
+.footer-li{
+    list-style: none;
+    display: flex;
+    flex-direction: row;
+    background-color: #19545B;
+    gap: 400px;
+    margin: 25px 0px;
+    padding: 10px 0px;
+}
+/*      Quienes somos letra*/
+p.m-0{
+    margin-bottom: 30px;
+}

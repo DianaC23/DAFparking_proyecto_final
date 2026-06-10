@@ -15,11 +15,11 @@ import { Panel } from 'primereact/panel';
         
 //Elementos del menú
         const items =[
-            {label: 'Precios'},
+            {label: 'Precios',url:'#tarifa'},
             {label: 'Ubicaciones' },
             {label: 'sobre nosotros', url :'#sobre-nosotros'},
-            {label: 'contacto'},
-            {label: 'Inicio de sesión',
+            {label: 'contacto', url:'#contacto'},
+            {label: 'Inicio de sesión', url:'/login',
                 className:  'menu-login'
              },
             {label: 'Registrarse'}
@@ -87,13 +87,10 @@ function Inicio(){
                         <p className="m-0">Brindamos un servicio confiable, accesible y ágil que optimice el iempo de <br/>nuestros
                         usuarios, apoyados en tecnologia moderna y un equipo calificado.<br/></p>
                         <p className="m-0">Deseamos consolidarnos con nuestro estacionamiento, siendo reconocidos por<br/> nuestra
-                        seguridad, eficiencia operativa y por mejorar la movilidad urbana<br/> de nuestra comunidad.</p>
-                        
-                        
-                    
+                        seguridad, eficiencia operativa y por mejorar la movilidad urbana<br/> de nuestra comunidad.</p> 
                 </Panel>
                 </div>
-                <div className='columna'>
+                <div className='columna' id='tarifa'>
                     <panel header = "Tarifas">
                         <div className='tabla-tarifa'>
                         <table className='tarifa'>
@@ -129,7 +126,7 @@ function Inicio(){
                 </div>
                 
             </main>
-            <footer>
+            <footer id='contacto'>
                 <div className='footer-a'>
                     <ul className='footer-li'>
                         <li >DAF SOLUTIONS S.A.S</li>
