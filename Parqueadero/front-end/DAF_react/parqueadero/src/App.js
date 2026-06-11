@@ -4,12 +4,14 @@ import {BrowserRouter, Routes, Route} from 'react-router-dom';
 //Muestra que pagina se mostrara primero
 import Inicio from './paginas/inicio';
 import Login from './paginas/login';
+import PerfilUser from './paginas/perfil_user';
 function App(){
   return(
     <BrowserRouter>   
       <Routes>
         <Route path='/' element={<Inicio/>}/>
         <Route path='/login' element={<Login/>}/>
+        <Route path='/perfil_user' element={<PerfilUser/>}/>
           </Routes> 
     </BrowserRouter>
    

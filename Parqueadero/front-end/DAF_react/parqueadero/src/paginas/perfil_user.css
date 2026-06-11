@@ -1,0 +1,12 @@
+/*Paleta de colores: #19545B, #00282A Y #94FDFF*/
+*{
+    box-sizing: border-box;
+}
+/*fondo*/
+.fondo{
+    min-height: 100vh;
+    background-image: url('../assets/parking_fondo.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
