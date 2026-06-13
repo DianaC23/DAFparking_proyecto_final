@@ -13,9 +13,15 @@ export const loginService = {
             const data = await response.json();
 
             if (response.ok) {
-                localStorage.setItem('nombreUsuario', data.nombre);
-                localStorage.setItem('apellidousuario',data.apellido);
-                localStorage.setItem('rolUsuario', data.rol);
+                const datosReal = data.usuario || data.cliente || data.user || data;
+                console.log("Datos extraídos para guardar", datosReal);
+                localStorage.setItem('nombreUsuario', datosReal.nombre);
+                localStorage.setItem('apellidoUsuario',datosReal.apellido);
+                localStorage.setItem('rolUsuario', datosReal.rol);
+                localStorage.setItem('correoUsuario', datosReal.correo_electronico || email || '');
+                localStorage.setItem('telefonoUsuario',datosReal.telefono || '');
+                localStorage.setItem('documentoUsuario',datosReal.documento);
+                localStorage.setItem('direccionUsuario', datosReal.direccion || '');
                 return true;
             } else {
                 throw new Error(data.mensaje ||"Credenciales incorrectas"); 

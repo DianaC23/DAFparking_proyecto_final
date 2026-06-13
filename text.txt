@@ -1,1 +1,1 @@
-CARPETA para  el proyecto final
+CARPETA para  el proyecto final del front-end

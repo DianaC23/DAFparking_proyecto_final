@@ -98,7 +98,7 @@ function Login(){
                     </nav>
                     </header>
                     <main>
-                        <div className="card">
+                        <div className="card-login">
                             <div className="flex flex-column md:flex-row">
                                 <form onSubmit={handleLogin} className='w-full md:w-5 flex flex-column align-items-center justify-content-center gap-3 py-5'>
                                     <i className="pi pi-car" style={{ fontSize: '5rem' }}></i>

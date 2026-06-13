@@ -11,7 +11,7 @@
     background-repeat: no-repeat;
 }
 /*main*/
-div.card{
+div.card-login{
     background: linear-gradient(135deg, #19545B 50%,#00282A 50%);
     color: #94FDFF;
     padding: 20px;

@@ -13,27 +13,42 @@ import { PanelMenu } from 'primereact/panelmenu';
 import 'primeicons/primeicons.css';
 //avatar
 import { Avatar } from 'primereact/avatar';
-//badge
-import { Badge } from 'primereact/badge';
+
+//card
+import { Card } from 'primereact/card';
         
 function PerfilUser(){
+
     const navigate = useNavigate();
+    //mi perfil
+    const[vistaActiva, setVistaActiva] = useState("perfil");
     const [usuario, setUsuario] = useState({
         nombre: 'usuario',
         apellido: '',
-        rol: 'invitado'
+        rol: 'invitado',
+        correo: '',
+        telefono: '',
+        documento: '',
+        direccion: ''
     });
     useEffect(() =>{
         const cargarDatosUsuario = () =>{
             const nombreGuardado = localStorage.getItem('nombreUsuario');
             const apellidoGuardado = localStorage.getItem('apellidoUsuario');
             const rolGuardado = localStorage.getItem('rolUsuario');
-
+            const correoGuardado = localStorage.getItem('correoUsuario');
+            const telefonoGuardado = localStorage.getItem('telefonoUsuario');
+            const documentoGuardado = localStorage.getItem('documentoUsuario');
+            const direccionGuardado = localStorage.getItem('direccionUsuario');
             if(nombreGuardado){
                 setUsuario({
                     nombre: nombreGuardado,
                     apellido: apellidoGuardado || '',
-                    rol: rolGuardado || 'Cliente'
+                    rol: rolGuardado || 'Cliente',
+                    correo: correoGuardado || 'No registrado',
+                    telefono: telefonoGuardado || 'No registrado',
+                    documento: documentoGuardado ||'',
+                    direccion: direccionGuardado
                 });
             }else{
                 navigate('/login');
@@ -49,43 +64,161 @@ function PerfilUser(){
 
         const handleLogout = () =>{
         localStorage.clear();
-        navigate('/login');
+        navigate('/');
         }
             //Elementos del menú
         const items = [
-            {icon: "pi pi-user" ,label:'Mi perfil'},
-            {icon: "pi pi-car" ,label: 'Mis vehículos'},
-            {icon: "pi pi-book" ,label:'Reservar espacio'},
-            {icon:"pi pi-calendar" ,label:'Mis eservas'},
-            {icon: "pi pi-arrow-right-arrow-left" ,label:'Movimientos'},
-            {icon: "pi pi-dollar" ,label:'Tarifas'},
-             {icon: "pi pi-wallet" ,label:'Pagos'},
+            {icon: "pi pi-user" ,label:'Mi perfil', command: ()=> setVistaActiva("perfil")},
+            {icon: "pi pi-car" ,label: 'Mis vehículos', command: ()=> setVistaActiva("vehiculos")},
+            {icon: "pi pi-book" ,label:'Reservar espacio', command: ()=> setVistaActiva("espacios")},
+            {icon:"pi pi-calendar" ,label:'Mis reservas', command: ()=> setVistaActiva("reservas")},
+            {icon: "pi pi-arrow-right-arrow-left" ,label:'Movimientos', command: ()=> setVistaActiva("movimientos")},
+            {icon: "pi pi-dollar" ,label:'Tarifas', command: ()=> setVistaActiva("tarifas")},
+             {icon: "pi pi-wallet" ,label:'Pagos', command: ()=> setVistaActiva("pagos")},
             {icon: "pi pi-sign-out" ,label:'Cerrar sesión', command: handleLogout}
         ]
     return(
         <div className='fondo'>
-            
             <nav>
-                <header className='topbar'>
-                    <div className='topbar-right'>
-                        <div className='notificaciones'>
-                            <i className='pi pi-bell'></i>
-                            <Badge value={3} ></Badge>
+                <header className='topbar-perfil'>
+                    <div className='topbar'>
+                        <h1>Parqueadero seguro</h1>
+                        <div className="usuario-contenedor">
                             <Avatar icon="pi pi-user" size="large" style={{ backgroundColor: '#94FDFF', color: '#ffffff' }} shape="circle" />
                             <div className="usuario-info">
                                <h4>{usuario.nombre} {usuario.apellido}</h4>
                                 <span>{usuario.rol}</span> 
                             </div>
                         </div>
+                            
                     </div>
-
                 </header>
             </nav>
-            <main>
-                <PanelMenu model={items} className="w-full md:w-20rem" />   
+            <main className="contenedor-principal">
+                <PanelMenu model={items} className="menu-lateral" /> 
+                {/**Contenido del menu lateral */}
+                {/*perfil */}
+                {vistaActiva === "perfil" && (
+                <div className="perfil-cliente">
+                    <Card className = "profile-Card shadow-4">
+                        <h2 className="card-tittle">Mi perfil</h2>
+                    <Avatar icon="pi pi-user" size="large" style={{ backgroundColor: '#94FDFF', color: '#ffffff' }} shape="circle" />
+                        <div className="avatar-seccion">
+                               <h4>{usuario.nombre} {usuario.apellido}</h4>
+                                <span>{usuario.rol}</span>
+                                <div className="info-list">
+                                    <div className="info-row">
+                                        <i className="pi pi-user"></i>
+                                       <span >
+                                    Nombre
+                                    </span>
+                                    <span>
+                                    {usuario.nombre}
+                                </span> 
+                                    </div>
+                                   <div className="info-row">
+                                        <i className="pi pi-user"></i>
+                                        <span >
+                                        Apellido
+                                        </span>
+                                        <span>
+                                        {usuario.apellido}
+                                        </span> 
+                                   </div>
+                                    <div className="info-row">
+                                        <i className="pi pi-email"></i>
+                                        <span >
+                                            Correo
+                                        </span>
+                                        <span>
+                                            {usuario.correo}
+                                        </span>
+                                    </div>
+                                    <div className="info-row">
+                                        <i className="pi pi-phone"> 
+                                            <span >
+                                    Teléfono
+                                </span>
+                                <span>
+                                    {usuario.telefono}
+                                </span>
+                                        </i>
+                                    </div>
+                               <div className="info-row">
+                                <i className="pi pi-file"><span >
+                                    Documento
+                                </span>
+                                <span>
+                                    {usuario.documento}
+                                </span></i>
+                               </div>
+                                <div className="info-row">
+                                    <i className="pi pi-home"></i>
+                                    <span >
+                                    Dirección
+                                </span>
+                                <span>
+                                    {usuario.direccion}
+                                </span>
+                                </div>
+                                <span >
+                                    Dirección
+                                </span>
+                                <span>
+                                    {usuario.direccion}
+                                </span> 
+                                </div>
+                            </div>
+                            {/**Boton de editar aun no esta listo */}
+                            <div className="action-button-container">
+                                <button className="btn-editar">
+                                    <i className=" pi pi-pencil"></i>Editar información
+                                </button>
+                            </div>
+                    </Card>
+                            
+                    </div> )}
+                    {/**Mis vehiculos */}
+                    {vistaActiva === "vehiculos" && (
+                <div className="perfil-cliente">
+                    <h1>vehiculos</h1>
+                    </div> )}
+                    {/**Reservar espacio*/}
+                    {vistaActiva === "espacios" && (
+                <div className="perfil-cliente">
+                    <h1>espacial</h1>
+                    </div> )}
+                    {/**Mis reservas */}
+                    {vistaActiva === "reservas" && (
+                <div className="perfil-cliente">
+                    <h1>secreto</h1>
+                    </div> )}
+                    {/**Movimientos */}
+                    {vistaActiva === "movimientos" && (
+                <div className="perfil-cliente">
+                    <h1>baile</h1>
+                    </div> )}
+                    {/**tarifas */}
+                    {vistaActiva === "tarifas" && (
+                <div className="perfil-cliente">
+                    <h1>precios</h1>
+                    </div> )}
+                    {/**pagos */}
+                    {vistaActiva === "pagos" && (
+                <div className="perfil-cliente">
+                    <h1>dollar</h1>
+                    </div> )}
             </main>
             <footer>
-                <h2>footer</h2>
+                 <footer id='contacto'>
+                <div className='footer-a'>
+                    <ul className='footer-li'>
+                        <li >DAF SOLUTIONS S.A.S</li>
+                        <li >Calle 80 #28-45 Medellín, Colombia</li>
+                        <li >Tel: (+57) 312 678 9054</li>
+                    </ul>
+                </div>
+            </footer>
             </footer>
         </div>
     )
