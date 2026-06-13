@@ -1,1 +1,6 @@
-CARPETA para  el proyecto final del front-end
+Link de GitHub:
+
+Usuario para probar el login
+tipo de rol: rol: Cliente
+email: eduard@mail.com
+contraseña: eddi123

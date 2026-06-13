@@ -54,7 +54,7 @@ function Login(){
     },
     {
         key:'2',
-        label:'Usuario',
+        label:'Cliente',
         data:'cliente',
         icon: 'pi pi-fw pi-user'
     }
@@ -107,7 +107,7 @@ function Login(){
                                     <h3>Iniciar sesión</h3>
                                     <p>Ingresa tus credenciales para continuar</p>
                                     <div className="login-user">
-                                        <label className="w-6rem">Tipo de usuario</label><br/>
+                                        <label className="w-6rem">Tipo de rol</label><br/>
                                             <TreeSelect value={selectedNodeKey} onChange={(e) => setSelectedNodeKey(e.value)} options={nodes} className="md:w-20rem w-full" placeholder="Selecciona tipo" required>
                                             </TreeSelect>
                                     </div>

@@ -1,0 +1,76 @@
+*{
+    box-sizing: border-box;
+}
+.page{
+    min-height: 100vh;
+    background-image: url('../assets/parking_fondo.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.container {
+  background-color: #19545b;
+  width: 400px;
+  padding: 35px;
+  border-radius: 12px;
+  color: white;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  margin-bottom: 10px;
+  border: none;
+  border-radius: 6px;
+  outline: none;
+}
+
+button {
+  width: 40%;
+  padding: 10px;
+  background-color: #94fdff;
+  color: #00282a;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold; 
+}
+
+button:hover {
+  background-color: #6ff7ff;
+}
+.page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 200px;
+}
+
+.logo-section img {
+  width: 500px;
+  height: auto;
+}
+
+.logo-section {
+  position:absolute;
+  top: 30px;
+  left: 30px;
+}
+
+h1 { 
+  font-size: 32px;
+  text-align: center;
+  margin-bottom: 10 px;
+  text-shadow: 0 0 10px rgba(148, 253, 255, 0.7);
+}
+
+h2 {
+ text-align: center; 
+ font-size: 26px;
+ font-weight: normal;
+ opacity: 0.9;
+ margin-bottom: 30px;
+ text-shadow: 0 0 10px rgba(148, 253, 255, 0.7);
+}

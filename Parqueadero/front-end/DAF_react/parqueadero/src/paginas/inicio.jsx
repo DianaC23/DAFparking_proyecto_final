@@ -22,7 +22,7 @@ import { Panel } from 'primereact/panel';
             {label: 'Inicio de sesión', url:'/login',
                 className:  'menu-login'
              },
-            {label: 'Registrarse'}
+            {label: 'Registrarse' ,url: '/registrarse'}
         ];
 
 function Inicio(){

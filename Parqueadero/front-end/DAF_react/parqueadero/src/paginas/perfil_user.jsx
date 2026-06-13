@@ -13,7 +13,8 @@ import { PanelMenu } from 'primereact/panelmenu';
 import 'primeicons/primeicons.css';
 //avatar
 import { Avatar } from 'primereact/avatar';
-
+//Botón
+import { Button } from 'primereact/button';
 //card
 import { Card } from 'primereact/card';
         
@@ -21,6 +22,7 @@ function PerfilUser(){
     const navigate = useNavigate();
     //mi perfil
     const[vistaActiva, setVistaActiva] = useState("perfil");
+    const[mostrarCuadro, setMostrarCuadro] = useState(false);
     const [usuario, setUsuario] = useState({
         nombre: 'usuario',
         apellido: '',
@@ -164,42 +166,50 @@ function PerfilUser(){
                             </div>
                             {/**Boton de editar aun no esta listo */}
                             <div className="action-button-container">
-                                <button className="btn-editar">
+                                <button className="btn-editar" onClick={() => setMostrarCuadro(true)}>
                                     <i className=" pi pi-pencil"></i>Editar información
                                 </button>
                             </div>
+                            {/*Acciones del boton editar */}
+                            {mostrarCuadro && (
+                                <div className="edit-info">
+                                    <Button icon="pi pi-times" rounded outlined severity="danger" aria-label="Cancel"className="btn-cerrar" onClick={() => setMostrarCuadro(false)}  />
+                                    <h1>Contenido por crear</h1>
+                                    <p>Aun no esta listo :3, presiona la x para salir</p>
+                                </div>
+                            )}
                     </Card>
                             
                     </div> )}
                     {/**Mis vehiculos */}
                     {vistaActiva === "vehiculos" && (
                 <div className="perfil-cliente">
-                    <h1>vehiculos</h1>
+                    <h1>Aun no esta listo :3</h1>
                     </div> )}
                     {/**Reservar espacio*/}
                     {vistaActiva === "espacios" && (
                 <div className="perfil-cliente">
-                    <h1>espacial</h1>
+                    <h1>Aun no esta listo :3</h1>
                     </div> )}
                     {/**Mis reservas */}
                     {vistaActiva === "reservas" && (
                 <div className="perfil-cliente">
-                    <h1>secreto</h1>
+                    <h1>Aun no esta listo :3</h1>
                     </div> )}
                     {/**Movimientos */}
                     {vistaActiva === "movimientos" && (
                 <div className="perfil-cliente">
-                    <h1>baile</h1>
+                    <h1>Aun no esta listo :3</h1>
                     </div> )}
                     {/**tarifas */}
                     {vistaActiva === "tarifas" && (
                 <div className="perfil-cliente">
-                    <h1>precios</h1>
+                    <h1>Aun no esta listo :3</h1>
                     </div> )}
                     {/**pagos */}
                     {vistaActiva === "pagos" && (
                 <div className="perfil-cliente">
-                    <h1>dollar</h1>
+                    <h1>Aun no esta listo :3</h1>
                     </div> )}
             </main>
             <footer>
