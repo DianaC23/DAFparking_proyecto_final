@@ -20,7 +20,7 @@ export const loginService = {
                 localStorage.setItem('rolUsuario', datosReal.rol);
                 localStorage.setItem('correoUsuario', datosReal.correo_electronico || email || '');
                 localStorage.setItem('telefonoUsuario',datosReal.telefono || '');
-                localStorage.setItem('documentoUsuario',datosReal.documento);
+                localStorage.setItem('documentoUsuario',datosReal.documento || '');
                 localStorage.setItem('direccionUsuario', datosReal.direccion || '');
                 return true;
             } else {

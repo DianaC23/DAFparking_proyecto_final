@@ -18,7 +18,6 @@ import { Avatar } from 'primereact/avatar';
 import { Card } from 'primereact/card';
         
 function PerfilUser(){
-
     const navigate = useNavigate();
     //mi perfil
     const[vistaActiva, setVistaActiva] = useState("perfil");
@@ -47,7 +46,7 @@ function PerfilUser(){
                     rol: rolGuardado || 'Cliente',
                     correo: correoGuardado || 'No registrado',
                     telefono: telefonoGuardado || 'No registrado',
-                    documento: documentoGuardado ||'',
+                    documento: documentoGuardado ||'No esta registrado',
                     direccion: direccionGuardado
                 });
             }else{
@@ -104,8 +103,8 @@ function PerfilUser(){
                         <h2 className="card-tittle">Mi perfil</h2>
                     <Avatar icon="pi pi-user" size="large" style={{ backgroundColor: '#94FDFF', color: '#ffffff' }} shape="circle" />
                         <div className="avatar-seccion">
-                               <h4>{usuario.nombre} {usuario.apellido}</h4>
-                                <span>{usuario.rol}</span>
+                               <h4 className="info-main">{usuario.nombre} {usuario.apellido}</h4>
+                                <span className="info-main">{usuario.rol}</span>
                                 <div className="info-list">
                                     <div className="info-row">
                                         <i className="pi pi-user"></i>
@@ -126,7 +125,7 @@ function PerfilUser(){
                                         </span> 
                                    </div>
                                     <div className="info-row">
-                                        <i className="pi pi-email"></i>
+                                        <i className="pi pi-envelope"></i>
                                         <span >
                                             Correo
                                         </span>
@@ -135,38 +134,32 @@ function PerfilUser(){
                                         </span>
                                     </div>
                                     <div className="info-row">
-                                        <i className="pi pi-phone"> 
+                                        <i className="pi pi-phone"></i>
                                             <span >
-                                    Teléfono
-                                </span>
-                                <span>
-                                    {usuario.telefono}
-                                </span>
-                                        </i>
+                                            Teléfono
+                                        </span>
+                                        <span>
+                                            {usuario.telefono}
+                                        </span>
                                     </div>
                                <div className="info-row">
-                                <i className="pi pi-file"><span >
+                                <i className="pi pi-file"></i>
+                                    <span >
                                     Documento
                                 </span>
                                 <span>
                                     {usuario.documento}
-                                </span></i>
+                                </span>
                                </div>
                                 <div className="info-row">
                                     <i className="pi pi-home"></i>
                                     <span >
                                     Dirección
-                                </span>
-                                <span>
-                                    {usuario.direccion}
-                                </span>
+                                    </span>
+                                    <span>
+                                        {usuario.direccion}
+                                    </span>
                                 </div>
-                                <span >
-                                    Dirección
-                                </span>
-                                <span>
-                                    {usuario.direccion}
-                                </span> 
                                 </div>
                             </div>
                             {/**Boton de editar aun no esta listo */}

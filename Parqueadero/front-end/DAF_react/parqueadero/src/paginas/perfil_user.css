@@ -70,3 +70,41 @@ a.p-panelmenu-header-link:hover{
     font-size: 22px;
 }
 /*Perfil*/
+div.profile-Card.shadow-4.p-card.p-component{
+    background-color: #19545B;
+    margin: 20px;
+    border-radius: 10px;
+    text-align: center;
+}
+div.p-card-content{
+    display: table;
+    gap: 30px;
+    padding: 30px;
+}
+
+.info-row{
+   display: flex;
+   align-items: center;
+    gap: 10px;
+    padding: 10px 3px 0px 2px;
+    margin: 10px 0px;
+    padding: 15px 10px 10px 20px;
+}
+.btn-editar{
+    color: #94FDFF;
+    background-color: #021b1d;
+    border-color: #94FDFF;
+    border-radius: 5px;
+    padding: 15px;
+    font-size: medium;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 80px;
+}
+.btn-editar:hover{
+    transform: scale(1.05);
+}
+.btn-editar:active{
+    transform: scale(0.95);
+}
