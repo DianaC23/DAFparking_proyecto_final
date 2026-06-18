@@ -14,7 +14,7 @@ import {Link, useNavigate} from 'react-router-dom'
 import logo from '../assets/DAF_LOGO.png';
 //menu
 import { Menubar } from 'primereact/menubar';
-//Ingresar datso
+//Ingresar datos
 import { InputText } from 'primereact/inputtext';
 //botón
 import { Button } from 'primereact/button';

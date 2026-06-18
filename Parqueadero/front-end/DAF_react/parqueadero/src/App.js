@@ -6,6 +6,7 @@ import Inicio from './paginas/inicio';
 import Login from './paginas/login';
 import PerfilUser from './paginas/perfil_user';
 import Registrarse from './paginas/registrarse';
+import Pagina404 from './paginas/page404';
 function App(){
   return(
     <BrowserRouter>   
@@ -14,6 +15,8 @@ function App(){
         <Route path='/login' element={<Login/>}/>
         <Route path='/perfil_user' element={<PerfilUser/>}/>
         <Route path='/registrarse' element={<Registrarse/>}/>
+        <Route path='/page404' element={<Pagina404/>}/>
+
           </Routes> 
     </BrowserRouter>
    

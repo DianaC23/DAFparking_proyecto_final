@@ -60,9 +60,10 @@ main{
 }
 .hero button{
     background-color: #94FDFF;
+    margin: 30 10px;
     color: #00282A;
     border: none;
-    padding: 12px 28px;
+    padding: 6px 90px;
     font-size: 15px;
     font-weight: 600;
     border-radius: 6px;

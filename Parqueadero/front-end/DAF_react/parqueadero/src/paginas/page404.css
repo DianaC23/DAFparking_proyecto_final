@@ -1,0 +1,40 @@
+*{
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+/*Paleta de colores: #19545B, #00282A Y #94FDFF*/
+
+div.pagefail{
+background: linear-gradient(to bottom, #00282A,#00282a84);
+min-height: 100vh;
+}
+div.pagefail-content{
+    display: block;
+    justify-items: center;
+    padding: 22px;
+}
+img.img-pagefail{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 500px;
+    height: auto;
+    margin: 33px 0px 33px 80px;
+    animation: 2s infinite;
+}
+p.pagefail-p{
+    font-size: large;
+}
+
+.pagefail-btn{
+    display: flex;
+    white-space: nowrap;
+    padding: 12px 35px;
+    color: #0b1a1e;
+    font-size: 16px;
+   justify-content: center;
+   margin: 30px auto;
+   transition: transform 0.2s ease, background-color 0.2s ease;
+   align-items: center;
+}

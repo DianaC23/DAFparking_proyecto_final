@@ -16,7 +16,7 @@ import { Panel } from 'primereact/panel';
 //Elementos del menú
         const items =[
             {label: 'Precios',url:'#tarifa'},
-            {label: 'Ubicaciones' },
+            {label: 'Ubicaciones', url:'/page404' },
             {label: 'sobre nosotros', url :'#sobre-nosotros'},
             {label: 'contacto', url:'#contacto'},
             {label: 'Inicio de sesión', url:'/login',
@@ -52,7 +52,11 @@ function Inicio(){
                     Tu tranquilidad empieza aquí.<br/>
                     Seguridad, confianza y el cuidado que tú vehículo merece.
                     </p>
-                    <button>Reservar ahora</button>
+                    {/*Botón que lleva al login para poder reservar */}
+                    <a href="/login">
+                        <button>Reservar ahora</button>
+                    </a>
+                    
                 </section>
                 <section className='beneficios'>
                     <div className='card'>

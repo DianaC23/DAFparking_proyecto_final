@@ -39,6 +39,7 @@ h3{
 div.login-user{
     margin: 30px;
     gap: 20px;
+    padding: 10px;
 }
 
 button{
@@ -71,4 +72,7 @@ i.pi.pi-car{
 /*      Quienes somos letra*/
 p.m-0{
     margin-bottom: 30px;
+}
+a{
+    text-decoration: none;
 }

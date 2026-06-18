@@ -10,6 +10,7 @@ import logo from '../assets/DAF_LOGO.png';
 function Registrarse() {
 
   const [nombre, setNombre] = useState("")
+  const [apellido, setApellido] = useState("")
   const [documento, setDocumento] = useState("")
   const [numero_de_telefono, setNumeroDeTelefono] = useState("")
   const [correo_electronico, setCorreoElectronico] = useState("")
@@ -25,7 +26,9 @@ function Registrarse() {
     if (!nombre){
       newErrors.nombre = "El nombre es obligatorio"
     }
-
+    if (!apellido){
+          newErrors.apellido = "El apellido es obligatorio"
+        }
     if (!documento){
       newErrors.documento = "El documento es obligatorio"
     }
@@ -62,6 +65,8 @@ function Registrarse() {
     
     setNombre("")
 
+    setApellido("")
+
     setDocumento("")
 
     setNumeroDeTelefono("")
@@ -91,7 +96,7 @@ function Registrarse() {
 
       <form onSubmit={handleSubmit}>
 
-      <label>Nombre completo</label>
+      <label>Nombre</label>
       <br />
       <input
        type="text"
@@ -103,6 +108,22 @@ function Registrarse() {
        />
       
       {errors.nombre && <p style={{color: "red"}}>{errors.nombre}</p>}
+
+      <br />
+      <br />
+
+      <label>Apellido</label>
+      <br />
+      <input
+       type="text"
+       value={apellido}
+       onChange={(e) => {
+       setRegistroExitoso("")
+       setApellido(e.target.value)
+       }}
+       />
+      
+      {errors.apellido && <p style={{color: "red"}}>{errors.apellido}</p>}
 
       <br />
       <br />
