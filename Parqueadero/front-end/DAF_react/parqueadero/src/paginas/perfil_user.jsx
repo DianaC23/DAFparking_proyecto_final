@@ -17,7 +17,8 @@ import { Avatar } from 'primereact/avatar';
 import { Button } from 'primereact/button';
 //card
 import { Card } from 'primereact/card';
-        
+//Camcio de datos del usuario
+import {clienteService } from '../services/ClienteService'; 
 function PerfilUser(){
     const navigate = useNavigate();
     //mi perfil
@@ -67,6 +68,28 @@ function PerfilUser(){
         localStorage.clear();
         navigate('/');
         }
+        //Para la sección de editar perfiL
+        //Función para procesar la actualización de datos
+        const handleUpdate = async (e) =>{
+            e.preventDefault();
+            try{
+                const datosParaEnviar = {
+                    ...usuario,
+                    correo_electronico: usuario.correo
+                };
+            console.log("Enviando datos", datosParaEnviar);
+
+            const ok = await clienteService.cambiosGuardados(datosParaEnviar);
+            if(ok){
+                alert("Datos actualizado con éxito");
+                setMostrarCuadro(false);
+                setUsuario(prev =>({...prev, contrasena: ''}));
+            }
+        }catch(error){
+            console.error("Error al actualizar", error);
+            alert(error.message || "No se guardaron los cambios");
+        }};
+
             //Elementos del menú
         const items = [
             {icon: "pi pi-user" ,label:'Mi perfil', command: ()=> setVistaActiva("perfil")},
@@ -96,7 +119,7 @@ function PerfilUser(){
                 </header>
             </nav>
             <main className="contenedor-principal">
-                <PanelMenu model={items} className="menu-lateral" /> 
+                <PanelMenu model={items} className="menu-lateral-pu" /> 
                 {/**Contenido del menu lateral */}
                 {/*perfil */}
                 {vistaActiva === "perfil" && (
@@ -145,7 +168,7 @@ function PerfilUser(){
                                         </span>
                                     </div>
                                <div className="info-row">
-                                <i className="pi pi-file"></i>
+                                <i className="pi pi-id-card"></i>
                                     <span >
                                     Documento
                                 </span>
@@ -164,7 +187,7 @@ function PerfilUser(){
                                 </div>
                                 </div>
                             </div>
-                            {/**Boton de editar aun no esta listo */}
+                            {/**Boton de editar */}
                             <div className="action-button-container">
                                 <button className="btn-editar" onClick={() => setMostrarCuadro(true)}>
                                     <i className=" pi pi-pencil"></i>Editar información
@@ -173,9 +196,17 @@ function PerfilUser(){
                             {/*Acciones del boton editar */}
                             {mostrarCuadro && (
                                 <div className="edit-info">
-                                    <Button icon="pi pi-times" rounded outlined severity="danger" aria-label="Cancel"className="btn-cerrar" onClick={() => setMostrarCuadro(false)}  />
-                                    <h1>Contenido por crear</h1>
-                                    <p>Aun no esta listo :3, presiona la x para salir</p>
+                                    <Button icon="pi pi-times" rounded  severity="danger" aria-label="Cancel"className="btn-cerrar" onClick={() => setMostrarCuadro(false)}  />
+                                    <h2>Editar perfil</h2>
+                                    <form onSubmit={handleUpdate}>
+                                        <input type="text"
+                                        value={usuario.nombre}
+                                        onChange={(e=> setUsuario({...usuario,
+                                            nombre: e.target.value
+                                        }))} />
+                                        <input type="hidden" name="documento" value={usuario.documento}/>
+                                        <button type="submit">Guardar cambios</button>
+                                    </form>
                                 </div>
                             )}
                     </Card>

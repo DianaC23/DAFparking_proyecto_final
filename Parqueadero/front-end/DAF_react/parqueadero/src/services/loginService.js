@@ -1,6 +1,8 @@
+//Login
 const API_URL = 'http://localhost:3000';
 
 export const loginService = {
+    //Inicio de sesión 
     iniciarSesion: async (email, contrasena) =>{
         try{
             const response = await fetch(`${API_URL}/login/cliente`,{

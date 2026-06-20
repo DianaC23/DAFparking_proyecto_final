@@ -43,16 +43,17 @@
     width: 100%;
     box-sizing: border-box;
 }
-div.menu-lateral{
-    width: 280px;
-    min-width: 280px;
-    flex-shrink: 0;
+div.menu-lateral-pu{
+
     background-color: #19545B;
-    margin: 0;
 }
 a.p-panelmenu-header-link{
-    background-color: #19545B;
     border: none;
+    margin: 30px;
+}
+div.p-panelmenu-header-content{
+    background-color: #19545B;
+    border-color: #19545B;
 }
 .vista-contenido{
     flex-grow: 1;
@@ -63,6 +64,7 @@ a.p-panelmenu-header-link{
 a.p-panelmenu-header-link:hover{
     background-color: #94fdff93;
     border: none;
+    margin: 30px;
 }
 .card-title{
     text-align: center;
@@ -93,18 +95,21 @@ div.p-card-content{
 .btn-editar{
     color: #94FDFF;
     background-color: #021b1d;
-    border-color: #94FDFF;
     border-radius: 5px;
-    padding: 15px;
     font-size: medium;
-    display: flex;
+    display: -webkit-box;
     justify-content: center;
     align-items: center;
-    margin: 20px 80px;
 }
 .btn-editar:hover{
-    transform: scale(1.05);
+    color: #19545B;
 }
-.btn-editar:active{
-    transform: scale(0.95);
+.btn-cerrar{
+    background-color: #021b1d;
+    border-radius: 100%;
+    color: #19545B;
+    border: none;
+    width: 60px;
+    height: 60px;
+
 }
