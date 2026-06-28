@@ -103,13 +103,30 @@ div.p-card-content{
 }
 .btn-editar:hover{
     color: #19545B;
-}
+}/*Editar información*/
 .btn-cerrar{
-    background-color: #021b1d;
+    padding: 0.25rem !important;
+    font-size: 0.75rem !important;
     border-radius: 100%;
     color: #19545B;
     border: none;
-    width: 60px;
-    height: 60px;
-
+    width: 1.75rem !important;
+    height: 1.75rem !important;
+    min-width: auto;
+  
+}
+div.edit-info{
+    display: table-cell;
+}
+.form-edit-info{
+    max-width: 600px;
+    margin: 50px 90px;
+}
+/*Tarifas*/
+table.tarifa{
+    background-color: #19545b7d;
+    border-radius: 10px;
+    padding: 30px;
+    display: table-cell;
+    font-size: larger;
 }

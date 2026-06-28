@@ -15,10 +15,20 @@ import 'primeicons/primeicons.css';
 import { Avatar } from 'primereact/avatar';
 //Botón
 import { Button } from 'primereact/button';
+import {ButtonGroup} from 'primereact/buttongroup';
 //card
 import { Card } from 'primereact/card';
-//Camcio de datos del usuario
+//Cambio de datos del usuario
 import {clienteService } from '../services/ClienteService'; 
+//Llamar datos del vehiculo del usuario
+import {TipoVehiculoService} from '../services/TipoVehiculoService';
+
+//Panel de las tarifas
+import { Panel } from 'primereact/panel';
+//Tabla y columnas
+import { DataTable } from 'primereact/datatable';
+import { Column } from 'primereact/column';
+
 function PerfilUser(){
     const navigate = useNavigate();
     //mi perfil
@@ -31,9 +41,21 @@ function PerfilUser(){
         correo: '',
         telefono: '',
         documento: '',
-        direccion: ''
+        direccion: '',
+        contrasena:''
     });
+    //Mis vehiculos
+    const[vehiculosuser, setVehiculosUser] = useState([]);
+    const[nuevoVehiculo, setNuevoVehiculo] = useState({
+        tipo: '',
+        placa: '',
+        modelo: '',
+        marca:'',
+        color:''
+    });
+
     useEffect(() =>{
+        //1.Cargar los datos del usuario
         const cargarDatosUsuario = () =>{
             const nombreGuardado = localStorage.getItem('nombreUsuario');
             const apellidoGuardado = localStorage.getItem('apellidoUsuario');
@@ -42,6 +64,7 @@ function PerfilUser(){
             const telefonoGuardado = localStorage.getItem('telefonoUsuario');
             const documentoGuardado = localStorage.getItem('documentoUsuario');
             const direccionGuardado = localStorage.getItem('direccionUsuario');
+            const contrasenaGuardado = localStorage.getItem('contrasenaUsuario');
             if(nombreGuardado){
                 setUsuario({
                     nombre: nombreGuardado,
@@ -50,7 +73,8 @@ function PerfilUser(){
                     correo: correoGuardado || 'No registrado',
                     telefono: telefonoGuardado || 'No registrado',
                     documento: documentoGuardado ||'No esta registrado',
-                    direccion: direccionGuardado
+                    direccion: direccionGuardado,
+                    contrasena: contrasenaGuardado
                 });
             }else{
                 navigate('/login');
@@ -63,10 +87,60 @@ function PerfilUser(){
                 window.removeEventListener('storage', cargarDatosUsuario);
             };
         }, [navigate]);
+//2.cargar vehiculos del usuario
+    useEffect(()=>{
+        const cargarDatosVehiculo = async () =>{
+        if(usuario && usuario.documento && usuario.documento !== 'No esta registrado') {
+            try {
+                console.log("Enviando petición HTTP  para el documento:", usuario.documento);
+                const datosTiVehiculos = await TipoVehiculoService.obtenerVehiculosPorUsuario(usuario.documento);
+                console.log("Datos que vienen del back-end", datosTiVehiculos);
+                setVehiculosUser(datosTiVehiculos);
+            } catch (error) {
+                console.error("Error al cargar vehículos", error);
+                setVehiculosUser([]);
+            }
+        }};
+        cargarDatosVehiculo ();
+            
+        }, [usuario]);
 
         const handleLogout = () =>{
         localStorage.clear();
         navigate('/');
+        }
+        //Función para agregar vehiculos
+        const handleAgregarVehiculo = async (e) =>{
+            e.preventDefault();
+            try{
+                //Verificación de seguridad del documento
+                if(!usuario || !usuario.documento || usuario.documento === 'No esta registrado'){
+                    alert("Error: No se ha detectado el documento de tu centa de usuario");
+                    return;
+                }
+                
+                //Estructra los datos uniendo el documento del usuario actual
+                const datosVehiculo = {
+                    tipo: nuevoVehiculo.tipo,
+                    placa: nuevoVehiculo.placa,
+                    modelo: Number(nuevoVehiculo.modelo),//Lo convertimos a número por seguridad de mongoose
+                    marca: nuevoVehiculo.marca,
+                    color: nuevoVehiculo.color,
+                    documento:usuario.documento//Se coloca el documento de la cuenta que inicio sesión
+                };
+                console.log("Insertando vehiculos",datosVehiculo);
+                const respuesta = await TipoVehiculoService.agregarVehiculoPorUsuario(datosVehiculo);
+                if(respuesta){
+                    alert("Vehiculo agregado con exito");
+                    setVehiculosUser(prevVehiculos => [...prevVehiculos,respuesta]);
+
+                    setMostrarCuadro(false);
+                    setNuevoVehiculo({tipo:'',placa: '',modelo: '',marca:'',color:''})
+                }
+            }catch(error){
+                console.error("Error al guardar vehiculo", error);
+                alert(error.message || "No se guardo el vehiculo");
+            }
         }
         //Para la sección de editar perfiL
         //Función para procesar la actualización de datos
@@ -189,22 +263,62 @@ function PerfilUser(){
                             </div>
                             {/**Boton de editar */}
                             <div className="action-button-container">
-                                <button className="btn-editar" onClick={() => setMostrarCuadro(true)}>
+                                {!mostrarCuadro && (
+                                    <button className="btn-editar" onClick={() => setMostrarCuadro(true)}>
                                     <i className=" pi pi-pencil"></i>Editar información
                                 </button>
+                                )}
+                                
                             </div>
                             {/*Acciones del boton editar */}
                             {mostrarCuadro && (
                                 <div className="edit-info">
-                                    <Button icon="pi pi-times" rounded  severity="danger" aria-label="Cancel"className="btn-cerrar" onClick={() => setMostrarCuadro(false)}  />
+                                    <Button  rounded  severity="danger" aria-label="Cancel"className="btn-cerrar" onClick={() => setMostrarCuadro(false)}>X</Button>
                                     <h2>Editar perfil</h2>
-                                    <form onSubmit={handleUpdate}>
+                                    <form className="form-edit-info" onSubmit={handleUpdate}>
+                                        <h4>Nombre</h4>
                                         <input type="text"
                                         value={usuario.nombre}
                                         onChange={(e=> setUsuario({...usuario,
                                             nombre: e.target.value
                                         }))} />
-                                        <input type="hidden" name="documento" value={usuario.documento}/>
+                                        <h4>Apellido</h4>
+                                        <input type="text"
+                                        value={usuario.apellido}
+                                        onChange={(e=> setUsuario({...usuario,
+                                            apellido: e.target.value
+                                        }))} />
+                                        <h4>Correo</h4>
+                                        <input type="text"
+                                        value={usuario.correo}
+                                        onChange={(e=> setUsuario({...usuario,
+                                            correo_electronico: e.target.value
+                                        }))} />
+                                        <h4>Teléfono</h4>
+                                        <input type="number"
+                                        value={usuario.telefono}
+                                        onChange={(e=> setUsuario({...usuario,
+                                            telefono: e.target.value
+                                        }))} />
+                                        <h4>Documento</h4>
+                                        <input type="number"
+                                        value={usuario.documento}
+                                        onChange={(e=> setUsuario({...usuario,
+                                            documento: e.target.value
+                                        }))} />
+                                        <h4>Dirección</h4>
+                                        <input type="text"
+                                        value={usuario.direccion}
+                                        onChange={(e=> setUsuario({...usuario,
+                                            direccion: e.target.value
+                                        }))} />
+                                        <h4>Contraseña</h4>
+                                        <input type="password"
+                                        placeholder="Ingresa una nueva contraseña"
+                                        value={usuario.contrasena || ''}
+                                        onChange={(e=> setUsuario({...usuario,
+                                            contrasena: e.target.value
+                                        }))} />
                                         <button type="submit">Guardar cambios</button>
                                     </form>
                                 </div>
@@ -215,7 +329,64 @@ function PerfilUser(){
                     {/**Mis vehiculos */}
                     {vistaActiva === "vehiculos" && (
                 <div className="perfil-cliente">
-                    <h1>Aun no esta listo :3</h1>
+                    <h1>Mis vehiculos</h1>
+                    <p>Administrar los vehiculos registrados en tu cuenta</p>
+                    {!mostrarCuadro &&(
+                        <Button label="Agregar vehiculo" icon="pi pi-plus" iconPos="right" onClick={() => setMostrarCuadro(true)}/>
+                    )}
+                    
+                        {/*Acciones del boton agregar vehiculos */}
+                        {mostrarCuadro && (
+                                <div className="add-car">
+                                    <Button  rounded  severity="danger" aria-label="Cancel"className="btn-cerrar" onClick={() => setMostrarCuadro(false)}>X</Button>
+                                    <h2>Agregar Vehiculo</h2>
+                                    <form className="form-edit-info" onSubmit={handleAgregarVehiculo}>
+                                        <h4>Tipo de vehiculo</h4>
+                                        <input type="text"
+                                        value={nuevoVehiculo.tipo}
+                                        onChange={(e=> setNuevoVehiculo({...nuevoVehiculo,
+                                            tipo: e.target.value
+                                        }))} />
+                                        <h4>Placa</h4>
+                                        <input type="text"
+                                        value={nuevoVehiculo.placa}
+                                        onChange={(e=> setNuevoVehiculo({...nuevoVehiculo,
+                                            placa: e.target.value
+                                        }))} />
+                                        <h4>Modelo</h4>
+                                        <input type="text"
+                                        value={nuevoVehiculo.modelo}
+                                        onChange={(e=> setNuevoVehiculo({...nuevoVehiculo,
+                                            modelo: e.target.value
+                                        }))} />
+                                        <h4>Marca</h4>
+                                        <input type="text"
+                                        value={nuevoVehiculo.marca}
+                                        onChange={(e=> setNuevoVehiculo({...nuevoVehiculo,
+                                            marca: e.target.value
+                                        }))} />
+                                        <h4>Color</h4>
+                                        <input type="text"
+                                        value={nuevoVehiculo.color}
+                                        onChange={(e=> setNuevoVehiculo({...nuevoVehiculo,
+                                            color: e.target.value
+                                        }))} />
+                                        
+                                        <button type="submit">Agregar vehiculo</button>
+                                    </form>
+                                </div>
+                            )}
+                    <DataTable value={vehiculosuser} tableStyle={{ minWidth: '50rem' }}>
+                        <Column field="tipo" header="Tipo de vehiculo"></Column>
+                        <Column field="placa" header="Placa"></Column>
+                        <Column field="modelo" header="Modelo"></Column>
+                        <Column field="marca" header="Marca"></Column>
+                        <Column field="color" header="Color"></Column>
+                    </DataTable>
+                    <ButtonGroup>
+                            <Button label="Editar" icon="pi pi-check"  />
+                            <Button label="eliminar" icon="pi pi-trash" />
+                        </ButtonGroup>
                     </div> )}
                     {/**Reservar espacio*/}
                     {vistaActiva === "espacios" && (
@@ -235,7 +406,36 @@ function PerfilUser(){
                     {/**tarifas */}
                     {vistaActiva === "tarifas" && (
                 <div className="perfil-cliente">
-                    <h1>Aun no esta listo :3</h1>
+                    <div className='columna' id='tarifa'>
+                    <Panel header = "Tarifas">
+                        <div className='tabla-tarifa'>
+                        <table className='tarifa'>
+                            <thead>
+                                <tr>
+                                <th>Tipo de vehiculo</th>
+                                <th>Hora</th>
+                                <th>Mensualidad</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>Bicicleta</td>
+                                <td>1.500</td>
+                                <td>20.000</td></tr>
+                                <tr><td>Moto</td>
+                                <td>2.000</td>
+                                <td>30.000</td></tr>
+                                <tr><td>Carro</td>
+                                <td>5.000</td>
+                                <td>60.000</td></tr>
+                                <tr><td>Camión</td>
+                                <td>8.000</td>
+                                <td>100.000</td></tr> 
+                            </tbody>
+                        </table>
+                    </div>
+                    </Panel>
+                    
+                </div>
                     </div> )}
                     {/**pagos */}
                     {vistaActiva === "pagos" && (
