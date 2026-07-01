@@ -15,7 +15,7 @@ import 'primeicons/primeicons.css';
 import { Avatar } from 'primereact/avatar';
 //Botón
 import { Button } from 'primereact/button';
-import {ButtonGroup} from 'primereact/buttongroup';
+
 //card
 import { Card } from 'primereact/card';
 //Cambio de datos del usuario
@@ -32,8 +32,14 @@ import { Column } from 'primereact/column';
 function PerfilUser(){
     const navigate = useNavigate();
     //mi perfil
+    //estados
+    
     const[vistaActiva, setVistaActiva] = useState("perfil");
     const[mostrarCuadro, setMostrarCuadro] = useState(false);
+    const[buscarPlaca, setBuscarPlaca] = useState('');
+    const[modoBusquedaEdicion, setModoBusquedaEdicion] = useState(false);
+    const[mostrarFormAgregar, setMostrarFormAgregar] = useState(false);
+    const[mostrarFormEditar, setMostrarFormEditar] = useState(false);
     const [usuario, setUsuario] = useState({
         nombre: 'usuario',
         apellido: '',
@@ -118,7 +124,6 @@ function PerfilUser(){
                     alert("Error: No se ha detectado el documento de tu centa de usuario");
                     return;
                 }
-                
                 //Estructra los datos uniendo el documento del usuario actual
                 const datosVehiculo = {
                     tipo: nuevoVehiculo.tipo,
@@ -126,7 +131,7 @@ function PerfilUser(){
                     modelo: Number(nuevoVehiculo.modelo),//Lo convertimos a número por seguridad de mongoose
                     marca: nuevoVehiculo.marca,
                     color: nuevoVehiculo.color,
-                    documento:usuario.documento//Se coloca el documento de la cuenta que inicio sesión
+                    documento:nuevoVehiculo.documento//Se coloca el documento de la cuenta que inicio sesión
                 };
                 console.log("Insertando vehiculos",datosVehiculo);
                 const respuesta = await TipoVehiculoService.agregarVehiculoPorUsuario(datosVehiculo);
@@ -134,7 +139,8 @@ function PerfilUser(){
                     alert("Vehiculo agregado con exito");
                     setVehiculosUser(prevVehiculos => [...prevVehiculos,respuesta]);
 
-                    setMostrarCuadro(false);
+
+                    setMostrarFormAgregar(false);
                     setNuevoVehiculo({tipo:'',placa: '',modelo: '',marca:'',color:''})
                 }
             }catch(error){
@@ -142,6 +148,68 @@ function PerfilUser(){
                 alert(error.message || "No se guardo el vehiculo");
             }
         }
+        //Editar datos del vehículo
+            //1. Buscar por placa
+            const handleBuscarVehiculoPorPlaca = async (e) =>{
+                e.preventDefault();
+               
+                if(!usuario || !usuario.documento || usuario.documento === 'No esta registrado'){
+                    alert("Error: no se ha detectado el documento de tu cuenta");
+                    return;
+                }
+                try{
+                    console.log("Buscando placa:", buscarPlaca);
+                    const vehiculoEncontrado = await TipoVehiculoService.buscarVehiculoPorPlaca(buscarPlaca);
+
+                    console.log("Esto respondio el backend",vehiculoEncontrado);
+
+                    if(vehiculoEncontrado){
+                        alert("Vehículo encontrado con éxito");
+                        setNuevoVehiculo({
+                            tipo: vehiculoEncontrado.tipo || '',
+                            placa: vehiculoEncontrado.placa || '',
+                            modelo: vehiculoEncontrado.modelo || '',
+                            marca: vehiculoEncontrado.marca || '',
+                            color: vehiculoEncontrado.color || ''
+                        });
+                        setMostrarFormEditar(true);
+                    }else{
+                        alert("No se encontro ningún vehiculo con esa placa");
+                    }
+                }catch(error){
+                    console.error("Error al buscar vehículo", error);
+                    alert("Error en el servidor al intentar buscar el vehículo");
+                }
+
+            };
+            //2. Editar los datos que aparecen en la placa
+            const handleEditarVehiculo = async (e) =>{
+                e.preventDefault();
+                try {
+                    const datosVehiculo = {
+                        tipo: nuevoVehiculo.tipo,
+                        placa: nuevoVehiculo.placa,
+                        modelo: Number(nuevoVehiculo.modelo),
+                        color: nuevoVehiculo.color,
+                        documento: nuevoVehiculo.documento
+                    };
+                    console.log("Editando vehículo", datosVehiculo);
+                    const respuesta = await TipoVehiculoService.editarVehiculoPorUsuario(datosVehiculo);
+                    if(respuesta){
+                        alert("vehiculo editado con exito");
+                        setVehiculosUser(prevVehiculos =>
+                            prevVehiculos.map(v => v.placa === nuevoVehiculo.placa ? respuesta : v)
+                    );
+                        setMostrarFormEditar(false);
+                        setModoBusquedaEdicion(false);
+                        setBuscarPlaca('');
+                        setNuevoVehiculo({tipo:'',placa:'',modelo:'',marca:'',color:''});
+                    }
+                } catch (error) {
+                    console.error("Error al editar vehiculos", error);
+                    alert(error.message || "No se pudo guardar la edición");
+                }
+            };
         //Para la sección de editar perfiL
         //Función para procesar la actualización de datos
         const handleUpdate = async (e) =>{
@@ -331,62 +399,106 @@ function PerfilUser(){
                 <div className="perfil-cliente">
                     <h1>Mis vehiculos</h1>
                     <p>Administrar los vehiculos registrados en tu cuenta</p>
-                    {!mostrarCuadro &&(
-                        <Button label="Agregar vehiculo" icon="pi pi-plus" iconPos="right" onClick={() => setMostrarCuadro(true)}/>
+                    {!modoBusquedaEdicion && !mostrarFormAgregar && (
+                        <div>
+                            <Button label="Agregar vehiculo" icon="pi pi-plus" iconPos="right" onClick={() => setMostrarFormAgregar(true)}/>
+                            <Button label="Editar" icon="pi pi-pencil" iconPos="right" onClick={() => setModoBusquedaEdicion(true)}/>
+                        </div>
+                        
                     )}
-                    
                         {/*Acciones del boton agregar vehiculos */}
-                        {mostrarCuadro && (
+                        {mostrarFormAgregar &&(
                                 <div className="add-car">
-                                    <Button  rounded  severity="danger" aria-label="Cancel"className="btn-cerrar" onClick={() => setMostrarCuadro(false)}>X</Button>
+                                    <Button  rounded  severity="danger" aria-label="Cancel"className="btn-cerrar" onClick={() => setMostrarFormAgregar(false)}>X</Button>
                                     <h2>Agregar Vehiculo</h2>
-                                    <form className="form-edit-info" onSubmit={handleAgregarVehiculo}>
-                                        <h4>Tipo de vehiculo</h4>
-                                        <input type="text"
-                                        value={nuevoVehiculo.tipo}
-                                        onChange={(e=> setNuevoVehiculo({...nuevoVehiculo,
-                                            tipo: e.target.value
-                                        }))} />
-                                        <h4>Placa</h4>
-                                        <input type="text"
-                                        value={nuevoVehiculo.placa}
-                                        onChange={(e=> setNuevoVehiculo({...nuevoVehiculo,
-                                            placa: e.target.value
-                                        }))} />
-                                        <h4>Modelo</h4>
-                                        <input type="text"
-                                        value={nuevoVehiculo.modelo}
-                                        onChange={(e=> setNuevoVehiculo({...nuevoVehiculo,
-                                            modelo: e.target.value
-                                        }))} />
-                                        <h4>Marca</h4>
-                                        <input type="text"
-                                        value={nuevoVehiculo.marca}
-                                        onChange={(e=> setNuevoVehiculo({...nuevoVehiculo,
-                                            marca: e.target.value
-                                        }))} />
-                                        <h4>Color</h4>
-                                        <input type="text"
-                                        value={nuevoVehiculo.color}
-                                        onChange={(e=> setNuevoVehiculo({...nuevoVehiculo,
-                                            color: e.target.value
-                                        }))} />
-                                        
-                                        <button type="submit">Agregar vehiculo</button>
-                                    </form>
-                                </div>
+                                        <form className="form-edit-info" onSubmit={handleAgregarVehiculo}>
+                                            <h4>Tipo de vehiculo</h4>
+                                            <input type="text"
+                                            value={nuevoVehiculo.tipo}
+                                            onChange={(e=> setNuevoVehiculo({...nuevoVehiculo,
+                                                tipo: e.target.value
+                                            }))} />
+                                            <h4>Placa</h4>
+                                            <input type="text"
+                                            value={nuevoVehiculo.placa}
+                                            onChange={(e=> setNuevoVehiculo({...nuevoVehiculo,
+                                                placa: e.target.value
+                                            }))} />
+                                            <h4>Modelo</h4>
+                                            <input type="text"
+                                            value={nuevoVehiculo.modelo}
+                                            onChange={(e=> setNuevoVehiculo({...nuevoVehiculo,
+                                                modelo: e.target.value
+                                            }))} />
+                                            <h4>Marca</h4>
+                                            <input type="text"
+                                            value={nuevoVehiculo.marca}
+                                            onChange={(e=> setNuevoVehiculo({...nuevoVehiculo,
+                                                marca: e.target.value
+                                            }))} />
+                                            <h4>Color</h4>
+                                            <input type="text"
+                                            value={nuevoVehiculo.color}
+                                            onChange={(e=> setNuevoVehiculo({...nuevoVehiculo,
+                                                color: e.target.value
+                                            }))} />
+                                            
+                                            <button type="submit" icon="pi pi-edit">Agregar vehiculo</button>
+                                        </form>
+                                    </div>
+                                )}
+                        <DataTable value={vehiculosuser} tableStyle={{ minWidth: '50rem' }}>
+                            <Column field="tipo" header="Tipo de vehiculo"></Column>
+                            <Column field="placa" header="Placa"></Column>
+                            <Column field="modelo" header="Modelo"></Column>
+                            <Column field="marca" header="Marca"></Column>
+                            <Column field="color" header="Color"></Column>
+                        </DataTable>
+                        
+                        {/*Acciones del boton editar vehiculos */}
+                        
+                        {modoBusquedaEdicion &&(
+                            <div className="edit-car">
+                            <Button  rounded  severity="danger" aria-label="Cancel"className="btn-cerrar" onClick={() => setModoBusquedaEdicion(false)}>X</Button>
+                            {!mostrarFormEditar && (
+                                <form onSubmit={handleBuscarVehiculoPorPlaca}>
+                                    <h4>Escribe la placa del vehículo a edítar</h4>
+                                    <input type="text" placeholder="DIA123" value={buscarPlaca} onChange={(e) => setBuscarPlaca(e.target.value.toUpperCase())} 
+                                    required/>
+                                    <Button type="submit" label="Buscar" severity="info"/>
+                                </form>
                             )}
-                    <DataTable value={vehiculosuser} tableStyle={{ minWidth: '50rem' }}>
-                        <Column field="tipo" header="Tipo de vehiculo"></Column>
-                        <Column field="placa" header="Placa"></Column>
-                        <Column field="modelo" header="Modelo"></Column>
-                        <Column field="marca" header="Marca"></Column>
-                        <Column field="color" header="Color"></Column>
-                    </DataTable>
-                    <ButtonGroup>
-                            <Button label="Editar" icon="pi pi-check"  />
+                            {/*Formulario de edición */}
+                            {mostrarFormEditar &&(
+                                <form onSubmit={handleEditarVehiculo}>
+                                    <h4>Placa</h4>
+                                    <input type="text" value={nuevoVehiculo.placa} 
+                                    disabled />
+                                    <h4>Tipo</h4>
+                                    <input type="text" value={nuevoVehiculo.tipo} 
+                                    onChange={(e) => setNuevoVehiculo({...nuevoVehiculo, tipo: e.target.value})}
+                                    required/>
+                                    <h4>Modelo</h4>
+                                    <input type="text" value={nuevoVehiculo.modelo} 
+                                    onChange={(e) => setNuevoVehiculo({...nuevoVehiculo, modelo: e.target.value})}
+                                    required/>
+                                    <h4>Marca</h4>
+                                    <input type="text" value={nuevoVehiculo.marca} 
+                                    onChange={(e) => setNuevoVehiculo({...nuevoVehiculo, marca: e.target.value})}
+                                    required/>
+                                    <h4>Color</h4>
+                                    <input type="text" value={nuevoVehiculo.color} 
+                                    onChange={(e) => setNuevoVehiculo({...nuevoVehiculo, color: e.target.value})}
+                                    required/>
+                                    <Button type="submit" label="Guardar Cambios" severity="success"></Button>
+                                </form>
+                            )}
+                            </div>
+                        )}
+                            
+                             {/*Acciones del boton eliminar vehiculos */}
                             <Button label="eliminar" icon="pi pi-trash" />
-                        </ButtonGroup>
+                        
                     </div> )}
                     {/**Reservar espacio*/}
                     {vistaActiva === "espacios" && (
