@@ -1,7 +1,18 @@
 Link de GitHub:
 https://github.com/DianaC23/DAFparking_proyecto_final
 Cambios:
-Se agrego pagina 404 y el perfil de usuario
+-Se agrego pagina 404.
+-La cuenta del cliente:
+	Perfil del cliente:
+		Editar datos del usuario
+	Mis vehículos:
+		Agregar vehículo
+		Editar vehículo
+		Mostrar vehículo
+		Eliminar vehículo
+	Tarifas
+	Cerrar sesión
+	
 
 Usuario para probar el login
 tipo de rol: rol: Cliente

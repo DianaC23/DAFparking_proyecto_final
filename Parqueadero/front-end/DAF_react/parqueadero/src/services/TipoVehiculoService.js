@@ -82,5 +82,27 @@ export const TipoVehiculoService = {
             console.error("Error en TipoVehiculoService", error);
             throw error;
         }
+    },
+    //Eliminar vehiculo por placa
+    eliminarVehiculoPorUsuario: async (datosVehiculo) =>{
+        try{
+            const respuesta = await fetch(`${API_URL}/vehiculo/${datosVehiculo.placa}`,{
+                method: 'DELETE',
+                headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(datosVehiculo)
+            
+        });
+            if (!respuesta.ok){
+                const errorJSON = await respuesta.json();
+                console.error("Error del backend", errorJSON);
+                throw new Error(errorJSON.error || errorJSON.mensaje || 'Error al eliminar vehiculo');
+            }
+            return await respuesta.json();
+        }catch(error){
+            console.error("Error en TipoVehiculoService", error);
+            throw error;
+        }
     }
 }
