@@ -427,14 +427,14 @@ function PerfilUser(){
                     </div> )}
                     {/**Mis vehiculos */}
                     {vistaActiva === "vehiculos" && (
-                <div className="perfil-cliente">
+                <div className="perfil-mis-vehiculos">
                     <h1>Mis vehiculos</h1>
                     <p>Administrar los vehiculos registrados en tu cuenta</p>
-                    {!modoBusquedaEdicion && !mostrarFormAgregar && (
-                        <div>
-                            <Button label="Agregar vehiculo" icon="pi pi-plus" iconPos="right" onClick={() => setMostrarFormAgregar(true)}/>
-                            <Button label="Editar" icon="pi pi-pencil" iconPos="right" onClick={() => setModoBusquedaEdicion(true)}/>
-                            <Button label="Eliminar" icon="pi pi-trash" iconPos="right" onClick={() => setMostrarCuadroEliminar(true)}/>
+                    {!modoBusquedaEdicion && !mostrarFormAgregar && !mostrarCuadroEliminar && (
+                        <div className="btn-misvehiculos">
+                            <Button className="btn-misvehiculos" label="Agregar vehiculo" icon="pi pi-plus" iconPos="right" onClick={() => setMostrarFormAgregar(true)}/>
+                            <Button className="btn-misvehiculos" label="Editar" icon="pi pi-pencil" iconPos="right" onClick={() => setModoBusquedaEdicion(true)}/>
+                            <Button className="btn-misvehiculos" label="Eliminar" icon="pi pi-trash" iconPos="right" onClick={() => setMostrarCuadroEliminar(true)}/>
                         </div>
                         
                     )}
@@ -479,8 +479,8 @@ function PerfilUser(){
                                         </form>
                                     </div>
                                 )}
-                        <DataTable value={vehiculosuser} tableStyle={{ minWidth: '50rem' }}>
-                            <Column field="tipo" header="Tipo de vehiculo"></Column>
+                        <DataTable value={vehiculosuser} tableStyle={{ minWidth: '50rem', padding:'30px'}}>
+                            <Column field="tipo" header="Tipo de vehiculo"  style={{padding:'10px'}}></Column>
                             <Column field="placa" header="Placa"></Column>
                             <Column field="modelo" header="Modelo"></Column>
                             <Column field="marca" header="Marca"></Column>
@@ -529,7 +529,6 @@ function PerfilUser(){
                          {/*Acciones del boton eliminar vehiculos */}
                          {mostrarCuadroEliminar &&(
                             <div className="eliminate-car">
-                                <Button  rounded  severity="danger" aria-label="Cancel"className="btn-cerrar" onClick={() => setMostrarCuadroEliminar(false)}>X</Button>
                                 {!mostrarAutoEliminar && (
                                 <form onSubmit={handleBuscarVehiculoPorPlaca}>
                                     <h4>Escribe la placa del vehículo a edítar</h4>
@@ -540,16 +539,17 @@ function PerfilUser(){
                                 )}
                                 {mostrarAutoEliminar && nuevoVehiculo && (
                                     <div className="detail-vehiculo-borrar">
-                                        <h4>¿Esta seguro que desea eliminar este vehículo?</h4>
+                                        <Button  rounded  severity="danger" aria-label="Cancel"className="btn-cerrar" onClick={() => setMostrarCuadroEliminar(false)}>X</Button>
+                                        <h4 className="form-eliminar-car">¿Esta seguro que desea eliminar este vehículo?</h4>
                                         <div>
-                                            <p><strong>Placa:</strong>{nuevoVehiculo?.placa}</p>
-                                            <p><strong>Tipo:</strong>{nuevoVehiculo?.tipo}</p>
-                                            <p><strong>Modelo:</strong>{nuevoVehiculo?.modelo}</p>
-                                            <p><strong>Marca:</strong>{nuevoVehiculo?.marca}</p>
-                                            <p><strong>Color:</strong>{nuevoVehiculo?.color}</p>
+                                            <p ><strong>Placa:</strong>{nuevoVehiculo?.placa}</p>
+                                            <p ><strong>Tipo:</strong>{nuevoVehiculo?.tipo}</p>
+                                            <p ><strong>Modelo:</strong>{nuevoVehiculo?.modelo}</p>
+                                            <p ><strong>Marca:</strong>{nuevoVehiculo?.marca}</p>
+                                            <p ><strong>Color:</strong>{nuevoVehiculo?.color}</p>
                                         </div>
                                         
-                                        <Button type="button" label="Sí, eliminar vehículo" severity="danger" onClick={handleEliminarVehiculo}></Button>
+                                        <Button type="button" label="Sí, eliminar vehículo" severity="danger" className="form-eliminar-car" onClick={handleEliminarVehiculo}></Button>
                                     </div>
                                 )}
                             </div>

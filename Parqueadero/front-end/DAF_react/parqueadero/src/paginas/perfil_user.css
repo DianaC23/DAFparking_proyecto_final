@@ -130,3 +130,36 @@ table.tarifa{
     display: table-cell;
     font-size: larger;
 }
+/*Mis vehículos*/
+div.perfil-mis-vehiculos{
+    justify-content: center;
+    margin: 100px 0px;
+    display: flow;
+}
+div.btn-misvehiculos{
+    display: inline-flex;
+    justify-content: flex-start;
+    margin: 30px 0px;
+}
+div.detail-vehiculo-borrar{
+    background-color: #021b1d;
+    margin: 20px;
+    border-radius: 30px;
+    padding: 40px 10px;
+}
+h4.form-eliminar-car{
+    display: flex;
+    justify-content: center;
+    margin: 30px;
+}
+button.form-eliminar-car{
+    display: flex;
+    justify-content: center;
+    margin: 30px 250px;
+}
+div.eliminate-car{
+    border-radius: 10px;
+}
+button.btn-cerrar{
+    margin: -20px 10px 10px 10px;
+}
