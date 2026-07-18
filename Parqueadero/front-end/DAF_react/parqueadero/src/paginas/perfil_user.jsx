@@ -1,5 +1,5 @@
 //usestate
-import React,{useState, useEffect  } from "react";
+import React,{useState, useEffect, useCallback  } from "react";
 //Navigate
 import { useNavigate } from "react-router-dom";
 //Estilos propios
@@ -15,14 +15,15 @@ import 'primeicons/primeicons.css';
 import { Avatar } from 'primereact/avatar';
 //Botón
 import { Button } from 'primereact/button';
-
+import { InputText } from "primereact/inputtext";
+import { Dropdown } from "primereact/dropdown"; 
 //card
 import { Card } from 'primereact/card';
 //Cambio de datos del usuario
 import {clienteService } from '../services/ClienteService'; 
 //Llamar datos del vehiculo del usuario
 import {TipoVehiculoService} from '../services/TipoVehiculoService';
-
+import {EspacioVehiculoService} from '../services/EspacioService';
 //Panel de las tarifas
 import { Panel } from 'primereact/panel';
 //Tabla y columnas
@@ -31,17 +32,17 @@ import { Column } from 'primereact/column';
 
 function PerfilUser(){
     const navigate = useNavigate();
-    //mi perfil
-    //estados
-    
     const[vistaActiva, setVistaActiva] = useState("perfil");
     const[mostrarCuadro, setMostrarCuadro] = useState(false);
     const[buscarPlaca, setBuscarPlaca] = useState('');
     const[modoBusquedaEdicion, setModoBusquedaEdicion] = useState(false);
     const[mostrarFormAgregar, setMostrarFormAgregar] = useState(false);
     const[mostrarFormEditar, setMostrarFormEditar] = useState(false);
-     const[mostrarCuadroEliminar, setMostrarCuadroEliminar] = useState(false);
-     const[mostrarAutoEliminar,setMostrarAutoEliminar] = useState(false);
+    const[mostrarCuadroEliminar, setMostrarCuadroEliminar] = useState(false);
+    const[mostrarAutoEliminar,setMostrarAutoEliminar] = useState(false);
+    const[vehiculo, setVehiculo] = useState('carro');
+    const[espacio, setEspacio] = useState([]);
+    const[espacioSeleccionado, setEspacioSeleccionado] = useState(null);
     const [usuario, setUsuario] = useState({
         nombre: 'usuario',
         apellido: '',
@@ -61,7 +62,7 @@ function PerfilUser(){
         marca:'',
         color:''
     });
-
+    //EFECTO1:Cargar datos del ususario
     useEffect(() =>{
         //1.Cargar los datos del usuario
         const cargarDatosUsuario = () =>{
@@ -95,7 +96,7 @@ function PerfilUser(){
                 window.removeEventListener('storage', cargarDatosUsuario);
             };
         }, [navigate]);
-    //2.cargar vehiculos del usuario
+    //EFECTO2:cargar vehiculos del usuario
     useEffect(()=>{
         const cargarDatosVehiculo = async () =>{
         if(usuario && usuario.documento && usuario.documento !== 'No esta registrado') {
@@ -112,7 +113,23 @@ function PerfilUser(){
         cargarDatosVehiculo ();
             
         }, [usuario]);
-
+        //EFECTO3:Accesible desde cualquier lugar
+           //Reservar espacio
+            const obtenerEspacios = useCallback( async() =>{
+                try {
+                    const datosEspacios = await EspacioVehiculoService.consultarEspacioParqueadero(vehiculo);
+                    setEspacio(datosEspacios || []);
+            }   catch (error) {
+                    console.error("Error al traer los espacios: ",error);
+            }},[vehiculo]);
+        useEffect(() => {
+            //Reservar espacio
+        obtenerEspacios();
+        //Ocupar espacio
+        const intervalo = setInterval(obtenerEspacios, 30000);
+        return () => clearInterval(intervalo);
+        },[obtenerEspacios]);
+        //Funciones managers
         const handleLogout = () =>{
         localStorage.clear();
         navigate('/');
@@ -133,7 +150,7 @@ function PerfilUser(){
                     modelo: Number(nuevoVehiculo.modelo),//Lo convertimos a número por seguridad de mongoose
                     marca: nuevoVehiculo.marca,
                     color: nuevoVehiculo.color,
-                    documento:nuevoVehiculo.documento//Se coloca el documento de la cuenta que inicio sesión
+                    documento:usuario.documento//Se coloca el documento de la cuenta que inicio sesión
                 };
                 console.log("Insertando vehiculos",datosVehiculo);
                 const respuesta = await TipoVehiculoService.agregarVehiculoPorUsuario(datosVehiculo);
@@ -191,7 +208,6 @@ function PerfilUser(){
                     console.error("Error al buscar vehículo", error);
                     alert("Error en el servidor al intentar buscar el vehículo");
                 }
-
             };
             //2. Editar los datos que aparecen en la placa
             const handleEditarVehiculo = async (e) =>{
@@ -202,14 +218,14 @@ function PerfilUser(){
                         placa: nuevoVehiculo.placa,
                         modelo: Number(nuevoVehiculo.modelo),
                         color: nuevoVehiculo.color,
-                        documento: nuevoVehiculo.documento
+                        documento: usuario.documento
                     };
                     console.log("Editando vehículo", datosVehiculo);
                     const respuesta = await TipoVehiculoService.editarVehiculoPorUsuario(datosVehiculo);
                     if(respuesta){
                         alert("vehiculo editado con exito");
                         setVehiculosUser(prevVehiculos =>
-                            prevVehiculos.map(v => v.placa === nuevoVehiculo.placa ? respuesta : v)
+                            prevVehiculos.map(v => v.placa === datosVehiculo.placa ? respuesta : v)
                     );
                         setMostrarFormEditar(false);
                         setModoBusquedaEdicion(false);
@@ -231,7 +247,7 @@ function PerfilUser(){
                     if(respuesta){
                         alert("vehiculo eliminado con exito");
                         setVehiculosUser(prevVehiculos =>
-                            prevVehiculos.filter(v => v.placa === nuevoVehiculo.placa)
+                            prevVehiculos.filter(v => v.placa !== nuevoVehiculo.placa)
                     );
                         setMostrarAutoEliminar(false);
                         setMostrarCuadroEliminar(false);
@@ -263,7 +279,67 @@ function PerfilUser(){
             console.error("Error al actualizar", error);
             alert(error.message || "No se guardaron los cambios");
         }};
-
+        //Generar filas con limite de 18
+        const limite = 8;
+        const espacioBackendA = (espacio || []).filter(e =>e.ubicacion?.includes('A'));
+        const espacioBackendB = (espacio || []).filter(e =>e.ubicacion?.includes('B'));
+        const filaA = Array.from({length:limite},(_, index) =>{
+            const numeroIdentificador = `A${index+1}`;
+            const espacioExistente = espacioBackendA.find(e => e.ubicacion === `Fila A - ${numeroIdentificador}`);
+            if(espacioExistente){
+                return{
+                    ...espacioExistente,numeroEspacio:numeroIdentificador,
+                    disponibilidad:false
+                };
+            }
+            return {
+                numeroEspacio:numeroIdentificador,disponibilidad:true,ubicacion:`Fila A - ${numeroIdentificador}`
+            };
+        });
+        const filaB = Array.from({length:limite},(_, index) =>{
+            const numeroIdentificador = `B${index+1}`;
+            const espacioExistente = espacioBackendB.find(e => e.ubicacion === `Fila B - ${numeroIdentificador}`);
+            if(espacioExistente){
+                return{
+                    ...espacioExistente,numeroEspacio:numeroIdentificador,
+                    disponibilidad:false
+                };
+            }
+            return {
+                numeroEspacio:numeroIdentificador,disponibilidad:true,ubicacion: `Fila B -${numeroIdentificador}`
+            };
+        });
+        //Manejo de ocupación de espacios
+        const handleRegistrarOcupacion = async (e) =>{
+            e.preventDefault();
+            if(!espacioSeleccionado || !espacioSeleccionado.ubicacion){
+                alert("Por favor,seleccione un espacio antes de registrar");
+                return;
+            }
+            try {
+                const datosParaEnviar = {
+                    documento: parseInt(e.target.cedula.value, 10),
+                    nombre: e.target.nombre.value,
+                    tipoDeEspacio: vehiculo,
+                    ubicacion: espacioSeleccionado.ubicacion,
+                    capacidad: 1,
+                    disponibilidad: false,
+                    placa: e.target.placa.value.trim().toUpperCase()
+                };
+                console.log("Enviando datos de asignacíon: ", datosParaEnviar);
+                const respuesta = await EspacioVehiculoService.guardarEspacio(datosParaEnviar);
+                if(respuesta){
+                    alert("Espacio asignado con éxito");
+                    e.target.reset();
+                    setEspacioSeleccionado(null);
+                    //Para que actualice los cuadros ocupados
+                    await obtenerEspacios();
+                }
+            }catch(error){
+                console.error("Error al actualizar espacio", error);
+                alert(error.message || "No se guardaron los cambios");
+            }
+        };
             //Elementos del menú
         const items = [
             {icon: "pi pi-user" ,label:'Mi perfil', command: ()=> setVistaActiva("perfil")},
@@ -275,6 +351,7 @@ function PerfilUser(){
              {icon: "pi pi-wallet" ,label:'Pagos', command: ()=> setVistaActiva("pagos")},
             {icon: "pi pi-sign-out" ,label:'Cerrar sesión', command: handleLogout}
         ]
+
     return(
         <div className='fondo'>
             <nav>
@@ -524,8 +601,7 @@ function PerfilUser(){
                                     </form>
                                 )}
                                 </div>
-                            )}
-                            
+                            )}  
                          {/*Acciones del boton eliminar vehiculos */}
                          {mostrarCuadroEliminar &&(
                             <div className="eliminate-car">
@@ -558,8 +634,93 @@ function PerfilUser(){
                     </div> )}
                     {/**Reservar espacio*/}
                     {vistaActiva === "espacios" && (
-                <div className="perfil-cliente">
-                    <h1>Aun no esta listo :3</h1>
+                <div className="perfil-cliente-espacios">
+                    <div className="disponibilidad-cliente">
+                       <h2>Disponibilidad de espacios</h2>
+                       <p>Consulta en tiempo real los espacios disponibles en el parqueadero</p>
+                    </div>
+                    
+                    {/*Mapa del parqueadero */}
+                    <div className="reservar-cliente">
+                        <h1>Reservar espacio</h1>
+                        <form className="form-reserva" onSubmit={handleRegistrarOcupacion}>
+                           
+                            <div className="flex flex-column gap-2">
+                                <label htmlFor="cedula" className="font-semibold">Cédula</label>
+                                <InputText type="number" id="cedula" name="cedula" placeholder="12345678" autoComplete="id" required/>
+                            </div>
+                            <div className="flex flex-column gap-2">
+                                <label htmlFor="nombre" className="font-semibold" required/>
+                                <InputText type="text" name="nombre" id="nombre" placeholder="Eduardo" autoComplete="name" required/>
+                            </div>
+                            <div className="flex flex-column gap-2">
+                                <label htmlFor="tipo-vehiculo" className="font-semibold">Tipo de vehículo</label>
+                                    <select name="tipo-vehiculo" id="tipo-vehiculo" value={vehiculo} onChange={(e)=> setVehiculo(e.target.value)}
+                                        className="p-inputtext p-component">
+                                            <option value="carro">Carro</option>
+                                            <option value="moto">Moto</option>
+                                            <option value="camion">Camión</option>
+                                            <option value="bicicleta">Bicicleta</option>
+                                        </select>
+                            </div>
+                            {/*Selección de espacio */}
+                            <div className="flex flex-column gap-2">
+                                <label htmlFor="lugar" className="font-semibold">Seleccionar espacio</label>
+                                <Dropdown id="lugar" value={espacioSeleccionado}
+                                options={[...filaA,...filaB]} optionLabel="numeroEspacio"
+                                onChange={(e)=> setEspacioSeleccionado(e.target.value)}
+                                placeholder="Selecciona un espacio" className="w-full"
+                                //Deshabilitar el espacio si ya está ocupado en el backend
+                                optionDisabled={(option)=> option.disponibilidad=== false} required/>
+                            </div>
+                            <div className="flex flex-column gap-2">
+                                <label htmlFor="ubicacion" className="font-semibold">Ubicación asignada</label>
+                                <InputText type="text" id="ubicacion" value={espacioSeleccionado ? espacioSeleccionado.ubicacion : "Ningun espacio seleccionado"} disabled/>
+                            </div>
+                            <div className="flex flex-column gap-2">
+                                <label htmlFor="placa" className="font-semibold">Placa</label>
+                                <InputText type="text" name="placa" id="placa" placeholder="ABC123" autoComplete="placa" required/>
+                            </div>
+                            <Button type="submit" label="Asignar espacio" className="mt-2 w-full p-button-success"></Button>
+                        </form>
+                    </div>
+                    {/*Mapa del parqueadero */}
+                    <div className="mapa-parqueadero">
+                        <h2>Piso 1-parqueadero principal</h2>
+                        <h3>Fila A</h3>
+                        <div className="fila fila-contenedor">
+                            {filaA.map((esp) => (
+                                <div key={esp.ubicacion} className={`espacio ${esp.disponibilidad ? "libre" : "ocupado"} ${
+                                    espacioSeleccionado?.ubicacion === esp.ubicacion ? "seleccionado" : ""
+                                }`} onClick = {() => esp.disponibilidad && setEspacioSeleccionado(esp)}>
+                                    <h3>{esp.ubicacion}</h3> <i className={esp.disponibilidad === true ?
+                                        "pi pi-check-circle": "pi pi-lock"
+                                    }/>
+                                    <p>{esp.disponibilidad ? "Disponible" : "Ocupado"}</p>
+                                </div>
+                            ))}
+                            
+                        </div>
+                        <div className="carretera">
+                            <div className="flecha">←</div>
+                            <i className="pi pi-car"></i>
+                            <div className="flecha">→</div>
+                        </div>
+                        <h3>Fila B</h3>
+                        <div className="fila fila-inferior">
+                            {filaB.map((esp) => (
+                                <div key={esp.ubicacion} className={`espacio ${esp.disponibilidad ? "libre" : "ocupado"} ${
+                                    espacioSeleccionado?.ubicacion === esp.ubicacion ? "seleccionado" : ""
+                                }`} onClick = {() => esp.disponibilidad && setEspacioSeleccionado(esp)}>
+                                    <h3>{esp.ubicacion}</h3> <i className={esp.disponibilidad === true ?
+                                        "pi pi-check-circle": "pi pi-lock"
+                                    }/>
+                                    <p>{esp.disponibilidad ? "Disponible" : "Ocupado"}</p>
+                                </div>
+                                
+                            ))}
+                        </div>
+                    </div>
                     </div> )}
                     {/**Mis reservas */}
                     {vistaActiva === "reservas" && (

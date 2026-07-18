@@ -11,6 +11,9 @@ Cambios:
 		Mostrar vehículo
 		Eliminar vehículo
 	Tarifas
+	Reservar espacios:
+		ver lugares disponibles
+		reservar espacios
 	Cerrar sesión
 	
 
