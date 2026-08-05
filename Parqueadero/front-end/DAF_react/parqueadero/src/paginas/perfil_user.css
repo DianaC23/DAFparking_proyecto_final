@@ -165,7 +165,7 @@ button.btn-cerrar{
 }
 /*Reservar espacio*/
 div.disponibilidad-cliente{
-    background-color: #19545B;
+    background-color: #072c3191;
 }
 div.reservar-cliente{
     background-color: #19545B;
@@ -181,10 +181,8 @@ div.reservar-cliente{
     flex-wrap: wrap;
     justify-content: center;
     gap: 15px;
-    
 }
 .espacio{
-    
     width: 120px;
     height: 140px;
     border-radius: 10px;
@@ -227,3 +225,15 @@ div.reservar-cliente{
     font-size: 3rem;
     color: #94FDFF;
 }
+div.button-espacio{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+    margin: 0px 50px 0px 0px;
+}
+.form-reserva{
+    display: inline-table;
+        margin: 0px 10px 0px 400px;
+}
+/*Mis reservas*/

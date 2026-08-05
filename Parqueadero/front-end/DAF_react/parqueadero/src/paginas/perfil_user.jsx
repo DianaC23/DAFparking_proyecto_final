@@ -1,7 +1,7 @@
 //usestate
 import React,{useState, useEffect, useCallback  } from "react";
 //Navigate
-import { useNavigate } from "react-router-dom";
+import {useNavigate } from "react-router-dom";
 //Estilos propios
 import './perfil_user.css'
 //estilos
@@ -24,6 +24,8 @@ import {clienteService } from '../services/ClienteService';
 //Llamar datos del vehiculo del usuario
 import {TipoVehiculoService} from '../services/TipoVehiculoService';
 import {EspacioVehiculoService} from '../services/EspacioService';
+//Para mis reservas y movimientos
+import { movimientosService } from "../services/MovimientoService";
 //Panel de las tarifas
 import { Panel } from 'primereact/panel';
 //Tabla y columnas
@@ -62,6 +64,9 @@ function PerfilUser(){
         marca:'',
         color:''
     });
+    //Mis reservas: Arreglo vacio [] para que guarde varias veces el historial
+    const[misReservas, setMisReservas] = useState([]);
+    const[cargandoReservas, setCargandoReservas] = useState(true);//Estado para controlar la carga
     //EFECTO1:Cargar datos del ususario
     useEffect(() =>{
         //1.Cargar los datos del usuario
@@ -91,7 +96,6 @@ function PerfilUser(){
         };
             cargarDatosUsuario();
             window.addEventListener('storage', cargarDatosUsuario);
-            
             return() =>{
                 window.removeEventListener('storage', cargarDatosUsuario);
             };
@@ -129,6 +133,26 @@ function PerfilUser(){
         const intervalo = setInterval(obtenerEspacios, 30000);
         return () => clearInterval(intervalo);
         },[obtenerEspacios]);
+    //Efecto 4: Cargar reservas del usuario conectado
+    useEffect(()=>{
+        const cargarReservasUsuario = async () =>{
+            const documentoUsuario = usuario?.documento;
+            //Solo busca si el documento del usuario ya fue cargado y es valido
+            if (documentoUsuario && documentoUsuario.trim() !== '' && documentoUsuario !== 'No esta registrado') {
+                try {
+                    setCargandoReservas(true);
+                    const datosReservas = await movimientosService.consultarMovimientos(usuario);
+                    setMisReservas(datosReservas || []);//Guardamos los datos directamente en el estado
+                } catch (error) {
+                    console.error("Error al cargar mis reservas",error);
+                    setMisReservas([]);
+                } finally{
+                    setCargandoReservas(false);
+                }
+            }
+        };
+        cargarReservasUsuario();
+    },[usuario]);//Se dispara cuando el documento del usuario este listo.
         //Funciones managers
         const handleLogout = () =>{
         localStorage.clear();
@@ -140,7 +164,7 @@ function PerfilUser(){
             try{
                 //Verificación de seguridad del documento
                 if(!usuario || !usuario.documento || usuario.documento === 'No esta registrado'){
-                    alert("Error: No se ha detectado el documento de tu centa de usuario");
+                    alert("Error: No se ha detectado el documento de tu cuenta de usuario");
                     return;
                 }
                 //Estructra los datos uniendo el documento del usuario actual
@@ -286,27 +310,27 @@ function PerfilUser(){
         const filaA = Array.from({length:limite},(_, index) =>{
             const numeroIdentificador = `A${index+1}`;
             const espacioExistente = espacioBackendA.find(e => e.ubicacion === `Fila A - ${numeroIdentificador}`);
-            if(espacioExistente){
+            if(espacioExistente && espacioExistente.disponibilidad === true){
                 return{
                     ...espacioExistente,numeroEspacio:numeroIdentificador,
-                    disponibilidad:false
+                    disponibilidad:true
                 };
             }
             return {
-                numeroEspacio:numeroIdentificador,disponibilidad:true,ubicacion:`Fila A - ${numeroIdentificador}`
+                numeroEspacio:numeroIdentificador,disponibilidad:false,ubicacion:`Fila A - ${numeroIdentificador}`
             };
         });
         const filaB = Array.from({length:limite},(_, index) =>{
             const numeroIdentificador = `B${index+1}`;
             const espacioExistente = espacioBackendB.find(e => e.ubicacion === `Fila B - ${numeroIdentificador}`);
-            if(espacioExistente){
+            if(espacioExistente && espacioExistente.disponibilidad === true){
                 return{
                     ...espacioExistente,numeroEspacio:numeroIdentificador,
-                    disponibilidad:false
+                    disponibilidad:true
                 };
             }
             return {
-                numeroEspacio:numeroIdentificador,disponibilidad:true,ubicacion: `Fila B -${numeroIdentificador}`
+                numeroEspacio:numeroIdentificador,disponibilidad:false,ubicacion: `Fila B -${numeroIdentificador}`
             };
         });
         //Manejo de ocupación de espacios
@@ -323,13 +347,37 @@ function PerfilUser(){
                     tipoDeEspacio: vehiculo,
                     ubicacion: espacioSeleccionado.ubicacion,
                     capacidad: 1,
-                    disponibilidad: false,
+                    disponibilidad: true,
                     placa: e.target.placa.value.trim().toUpperCase()
                 };
                 console.log("Enviando datos de asignacíon: ", datosParaEnviar);
                 const respuesta = await EspacioVehiculoService.guardarEspacio(datosParaEnviar);
                 if(respuesta){
                     alert("Espacio asignado con éxito");
+                    //Calcular tarifa visual
+                    let tarifaVisual = 0;
+                    const tipoVehiculoNormalizado = String(vehiculo).toLowerCase().trim();
+                    if(tipoVehiculoNormalizado === 'bicicleta'){
+                    tarifaVisual = 1500;
+                }else if(tipoVehiculoNormalizado === 'moto'){
+                    tarifaVisual = 2000;
+                }else if(tipoVehiculoNormalizado === 'carro' || tipoVehiculoNormalizado === 'automovil'){
+                    tarifaVisual = 5000;
+                }else if(tipoVehiculoNormalizado === 'camion'  || tipoVehiculoNormalizado === 'camión'){
+                    tarifaVisual = 8000;
+                }else{
+                    tarifaVisual = 3000;//Tarifa de respaldo
+                }
+                    const nuevoHistorialParaTabla = {
+                        documento: datosParaEnviar.documento,
+                        placa: datosParaEnviar.placa,
+                        espacio: datosParaEnviar.ubicacion,
+                        valor_pagado:tarifaVisual,
+                        rol: 'Entrada',
+                        tipoDeEspacio: datosParaEnviar.tipoDeEspacio,
+                        fecha: new Date()
+                    };
+                    setMisReservas(prevRersevas => [...prevRersevas, nuevoHistorialParaTabla]);
                     e.target.reset();
                     setEspacioSeleccionado(null);
                     //Para que actualice los cuadros ocupados
@@ -340,6 +388,7 @@ function PerfilUser(){
                 alert(error.message || "No se guardaron los cambios");
             }
         };
+        //Elementos de la sección mis reservas
             //Elementos del menú
         const items = [
             {icon: "pi pi-user" ,label:'Mi perfil', command: ()=> setVistaActiva("perfil")},
@@ -512,8 +561,7 @@ function PerfilUser(){
                             <Button className="btn-misvehiculos" label="Agregar vehiculo" icon="pi pi-plus" iconPos="right" onClick={() => setMostrarFormAgregar(true)}/>
                             <Button className="btn-misvehiculos" label="Editar" icon="pi pi-pencil" iconPos="right" onClick={() => setModoBusquedaEdicion(true)}/>
                             <Button className="btn-misvehiculos" label="Eliminar" icon="pi pi-trash" iconPos="right" onClick={() => setMostrarCuadroEliminar(true)}/>
-                        </div>
-                        
+                        </div>  
                     )}
                         {/*Acciones del boton agregar vehiculos */}
                         {mostrarFormAgregar &&(
@@ -639,7 +687,6 @@ function PerfilUser(){
                        <h2>Disponibilidad de espacios</h2>
                        <p>Consulta en tiempo real los espacios disponibles en el parqueadero</p>
                     </div>
-                    
                     {/*Mapa del parqueadero */}
                     <div className="reservar-cliente">
                         <h1>Reservar espacio</h1>
@@ -671,7 +718,7 @@ function PerfilUser(){
                                 onChange={(e)=> setEspacioSeleccionado(e.target.value)}
                                 placeholder="Selecciona un espacio" className="w-full"
                                 //Deshabilitar el espacio si ya está ocupado en el backend
-                                optionDisabled={(option)=> option.disponibilidad=== false} required/>
+                                optionDisabled={(option)=> option.disponibilidad=== true} required/>
                             </div>
                             <div className="flex flex-column gap-2">
                                 <label htmlFor="ubicacion" className="font-semibold">Ubicación asignada</label>
@@ -681,7 +728,10 @@ function PerfilUser(){
                                 <label htmlFor="placa" className="font-semibold">Placa</label>
                                 <InputText type="text" name="placa" id="placa" placeholder="ABC123" autoComplete="placa" required/>
                             </div>
-                            <Button type="submit" label="Asignar espacio" className="mt-2 w-full p-button-success"></Button>
+                            <div className="button-espacio">
+                                <Button type="submit" label="Asignar espacio" className="mt-2 w-full p-button-success"></Button>
+                            </div>
+                            
                         </form>
                     </div>
                     {/*Mapa del parqueadero */}
@@ -690,13 +740,12 @@ function PerfilUser(){
                         <h3>Fila A</h3>
                         <div className="fila fila-contenedor">
                             {filaA.map((esp) => (
-                                <div key={esp.ubicacion} className={`espacio ${esp.disponibilidad ? "libre" : "ocupado"} ${
+                                <div key={esp.ubicacion} className={`espacio ${esp.disponibilidad ? "Ocupado" : "libre"} ${
                                     espacioSeleccionado?.ubicacion === esp.ubicacion ? "seleccionado" : ""
-                                }`} onClick = {() => esp.disponibilidad && setEspacioSeleccionado(esp)}>
-                                    <h3>{esp.ubicacion}</h3> <i className={esp.disponibilidad === true ?
-                                        "pi pi-check-circle": "pi pi-lock"
-                                    }/>
-                                    <p>{esp.disponibilidad ? "Disponible" : "Ocupado"}</p>
+                                }`} onClick = {() => !esp.disponibilidad && setEspacioSeleccionado(esp)}>
+                                    <h3>{esp.ubicacion}</h3> <i className={esp.disponibilidad ?
+                                        "pi pi-lock": "pi pi-circle"}/>
+                                    <p>{esp.disponibilidad ? "Ocupado" : "Disponible"}</p>
                                 </div>
                             ))}
                             
@@ -709,24 +758,41 @@ function PerfilUser(){
                         <h3>Fila B</h3>
                         <div className="fila fila-inferior">
                             {filaB.map((esp) => (
-                                <div key={esp.ubicacion} className={`espacio ${esp.disponibilidad ? "libre" : "ocupado"} ${
+                                <div key={esp.ubicacion} className={`espacio ${esp.disponibilidad ? "ocupado" : "libre"} ${
                                     espacioSeleccionado?.ubicacion === esp.ubicacion ? "seleccionado" : ""
-                                }`} onClick = {() => esp.disponibilidad && setEspacioSeleccionado(esp)}>
-                                    <h3>{esp.ubicacion}</h3> <i className={esp.disponibilidad === true ?
-                                        "pi pi-check-circle": "pi pi-lock"
+                                }`} onClick = {() => !esp.disponibilidad && setEspacioSeleccionado(esp)}>
+                                    <h3>{esp.ubicacion}</h3> <i className={esp.disponibilidad ?
+                                        "pi pi-lock": "pi pi-check-circle"
                                     }/>
-                                    <p>{esp.disponibilidad ? "Disponible" : "Ocupado"}</p>
+                                    <p>{esp.disponibilidad ? "Ocupado" : "Disponible"}</p>
                                 </div>
-                                
                             ))}
                         </div>
                     </div>
                     </div> )}
                     {/**Mis reservas */}
                     {vistaActiva === "reservas" && (
-                <div className="perfil-cliente">
-                    <h1>Aun no esta listo :3</h1>
-                    </div> )}
+                        <div className="perfil-mis-vehiculos">
+                            <div style={{display: 'flex', alignItems: 'center', gap:'10px'}}>
+                              <i className="pi pi-calendar" style={{color:'#94FDFF' }}/> 
+                                <h1>Mis reservas</h1>
+                            </div>
+                            <p>Consulta y administra tus reservas del parqueadero</p>
+                            {cargandoReservas ? (
+                                <p style={{color:'#94FDFF'}}><i className="pi pi-spin pi-spiner" style={{marginRight:'8px'}}></i>Cargando tus reservas...</p>
+                            ):(
+                                <DataTable
+                                value={misReservas} tableStyle={{minWidth: '50rem', padding: '30px'}} emptyMessage = "No tienes reservas registradas">
+                                    {/*Vincular columnas */}
+                                    <Column field="documento" header="Documento" style={{padding:'10px'}}></Column>
+                                    <Column field="placa" header="Placa vehiculo"></Column>
+                                    <Column field="espacio" header="Espacio guardado"></Column>
+                                    <Column field="valor_pagap" header="Valor Pagado" body={(rowData) =>`$${rowData.valor_pagado}`}></Column>
+                                    <Column field="rol" header="Rol"></Column>
+                                </DataTable>
+                            )
+                            }
+                        </div> )}
                     {/**Movimientos */}
                     {vistaActiva === "movimientos" && (
                 <div className="perfil-cliente">
@@ -762,8 +828,7 @@ function PerfilUser(){
                             </tbody>
                         </table>
                     </div>
-                    </Panel>
-                    
+                    </Panel>  
                 </div>
                     </div> )}
                     {/**pagos */}
