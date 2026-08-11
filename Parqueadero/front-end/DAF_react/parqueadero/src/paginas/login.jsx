@@ -49,7 +49,7 @@ function Login(){
     },
     {
         key:'1',
-        label: 'Empleado',
+        label: 'Trabajador',
         data:'personal',
         icon: 'pi pi-fw pi-id-card'
     },
@@ -63,8 +63,11 @@ function Login(){
     //Funcion para procesar el Login y hara la redirección
     const handleLogin = async (e) =>{
         e.preventDefault();//Evita recargar la pagina
-
-        try{
+        if (!selectedNodeKey) {
+            alert("Por favor selecciona un tipo de rol");
+        }
+        if (selectedNodeKey === '2') {
+           try{
             console.log("Intentando ingresar con: ", email);
 
             const exito = await loginService.iniciarSesion(email,contrasena);
@@ -80,8 +83,16 @@ function Login(){
         //Conexión con base  de datos
         console.log('Datos enviados: ', {selectedNodeKey,email,contrasena});
         navigate('/perfil_user');
-    }
-
+    } 
+         else if (selectedNodeKey === '1') {
+            console.log("Rol empleado encontrado");
+            navigate('/page404');
+        }else if(selectedNodeKey === '0'){
+            console.log("Rol administrador encontrado");
+            navigate('/page404');
+        }else{
+            console.error("Rol no reconocido");
+        }};
     const start = (<Link to={'/'}>
                         <img src={logo}
                          alt="DAF_PARKING"
