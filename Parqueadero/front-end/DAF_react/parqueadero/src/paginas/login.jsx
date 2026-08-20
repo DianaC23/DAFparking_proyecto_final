@@ -33,7 +33,7 @@ const items =[
     {label: 'Inicio de sesión', url:'/login',
         className:  'menu-login'
         },
-    {label: 'Registrarse'}
+    {label: 'Registrarse', url:'/registrarse'}
     ];
 function Login(){
     const navigate = useNavigate();

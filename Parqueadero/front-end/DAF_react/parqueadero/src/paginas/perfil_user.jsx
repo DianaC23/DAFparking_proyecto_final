@@ -330,9 +330,7 @@ function PerfilUser(){
                 };
             }
             return {
-                numeroEspacio:numeroIdentificador,disponibilidad:false,ubicacion: `Fila B -${numeroIdentificador}`
-            };
-        });
+                numeroEspacio:numeroIdentificador,disponibilidad:false,ubicacion: `Fila B -${numeroIdentificador}`} });
         //Manejo de ocupación de espacios
         const handleRegistrarOcupacion = async (e) =>{
             e.preventDefault();
@@ -374,10 +372,14 @@ function PerfilUser(){
                         espacio: datosParaEnviar.ubicacion,
                         valor_pagado:tarifaVisual,
                         rol: 'Entrada',
+                        //valorPagar: valor_pagado * 
                         tipoDeEspacio: datosParaEnviar.tipoDeEspacio,
-                        fecha: new Date()
+                        //en vez de fecha se pone createdAt porque asi esta guardado en el backend
+                        createdAt: new Date(),
+                        //En vez de fecha de salida se pone versionkey porque asi esta guardado en el Backend
+                        versionKey: new Date()
                     };
-                    setMisReservas(prevRersevas => [...prevRersevas, nuevoHistorialParaTabla]);
+                    setMisReservas(prevReservas => [...prevReservas, nuevoHistorialParaTabla]);
                     e.target.reset();
                     setEspacioSeleccionado(null);
                     //Para que actualice los cuadros ocupados
@@ -748,7 +750,6 @@ function PerfilUser(){
                                     <p>{esp.disponibilidad ? "Ocupado" : "Disponible"}</p>
                                 </div>
                             ))}
-                            
                         </div>
                         <div className="carretera">
                             <div className="flecha">←</div>
@@ -787,11 +788,10 @@ function PerfilUser(){
                                     <Column field="documento" header="Documento" style={{padding:'10px'}}></Column>
                                     <Column field="placa" header="Placa vehiculo"></Column>
                                     <Column field="espacio" header="Espacio guardado"></Column>
-                                    <Column field="valor_pagap" header="Valor Pagado" body={(rowData) =>`$${rowData.valor_pagado}`}></Column>
+                                    <Column field="valor_pagado" header="Valor Pagado" body={(rowData) =>`$${rowData.valor_pagado}`}></Column>
                                     <Column field="rol" header="Rol"></Column>
-                                </DataTable>
-                            )
-                            }
+                                    <Column field="createdAt" header="fecha de entrada" body={(rowData)=>rowData?.createdAt ? new Date (rowData.createdAt).toLocaleTimeString(): ''}  style={{padding:'30px'}}></Column>
+                                </DataTable> ) }
                         </div> )}
                     {/**Movimientos */}
                     {vistaActiva === "movimientos" && (
@@ -833,9 +833,7 @@ function PerfilUser(){
                     </div> )}
                     {/**pagos */}
                     {vistaActiva === "pagos" && (
-                <div className="perfil-cliente">
-                    <h1>Aun no esta listo :3</h1>
-                    </div> )}
+                        <p>Por crear</p>)}
             </main>
             <footer>
                  <footer id='contacto'>
