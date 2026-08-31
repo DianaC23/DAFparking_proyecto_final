@@ -12,6 +12,7 @@ import { InputText } from 'primereact/inputtext';
 import { Password } from 'primereact/password';
 //LLamar registro de usuarios
 import {RegistroClienteService} from '../services/RegistroClienteService';
+import { useNavigate } from "react-router-dom";
 
 function Registrarse() {
   const [nombre, setNombre] = useState("");
@@ -95,6 +96,7 @@ function Registrarse() {
     setRegistroExitoso("");
     setErrors({});
   }
+  const navigate = useNavigate();
   return (
     <div className="page">
       <div className="logo-section">
@@ -158,7 +160,7 @@ function Registrarse() {
         {/*Botones */}
         <div className='actions-section' style={{display: 'flex', gap: '10px', margin: '20px'}}>
           <Button type='submit' label="Registrarse" loading={cargando} className='pagefail-btn'/>
-          <Button type="button" url= "./Paginas/inic" className='pagefail-btn'>Volver al inicio</Button>
+          <Button type="button" label= "Volver al inicio" onClick={() => navigate('/')} className='pagefail-btn'/>
         </div>
     </form>
     </div>

@@ -8,6 +8,7 @@ import './login.css'
 import 'primeicons/primeicons.css';
 //long service
 import { loginService } from '../services/loginService';
+import { EmpleadoService } from '../services/EmpleadoService';
 //Link en el logo
 import {Link, useNavigate} from 'react-router-dom'
 //logo
@@ -19,9 +20,10 @@ import { InputText } from 'primereact/inputtext';
 //botón
 import { Button } from 'primereact/button';
 //Selección
-import { TreeSelect } from 'primereact/treeselect';
+//import { TreeSelect } from 'primereact/treeselect';
 //Contraseña             
 import { Password } from 'primereact/password';
+import { Dropdown } from 'primereact/dropdown';
 
         
 //Elementos del menú
@@ -42,20 +44,20 @@ function Login(){
     const [email, setEmail]= useState('');
     const [contrasena, setContrasena]= useState('');
     const [nodes] = useState([{
-         key: '0',
         label: 'Administrador',
+        value: '0',
         data: 'admin',
         icon: 'pi pi-fw pi-cog'
     },
     {
-        key:'1',
         label: 'Trabajador',
+        value: '1',
         data:'personal',
         icon: 'pi pi-fw pi-id-card'
     },
     {
-        key:'2',
         label:'Cliente',
+        value: '2',
         data:'cliente',
         icon: 'pi pi-fw pi-user'
     }
@@ -85,8 +87,24 @@ function Login(){
         navigate('/perfil_user');
     } 
          else if (selectedNodeKey === '1') {
-            console.log("Rol empleado encontrado");
-            navigate('/page404');
+            try {
+                console.log("Intentado ingresar con: ", email);
+                const empleado = await EmpleadoService.datosEmpleado(email,contrasena);
+                if(empleado){
+                    console.log("Login exitoso", empleado);
+                    localStorage.setItem('nombreTrabajador', empleado.nombre || "Empleado sin nombre");
+                    localStorage.setItem('rolTrabajador', empleado.rol || "Operador");
+                    localStorage.setItem('documentoTrabajador', empleado.documento || "No registra");
+                    localStorage.setItem('turnoTrabajador', empleado.turno || "No asignado");
+                    navigate('/perfil_trabajador', {state: {empleado}});
+                }
+            } catch (error) {
+                console.error("Error en autenticación;",error.message);
+                alert("Error al iniciar sesión" + error.message);
+            }
+            //Conexión con base  de datos
+            console.log('Datos enviados: ', {selectedNodeKey,email,contrasena});
+            navigate('/perfil_trabajador');
         }else if(selectedNodeKey === '0'){
             console.log("Rol administrador encontrado");
             navigate('/page404');
@@ -121,8 +139,14 @@ function Login(){
                                     <p>Ingresa tus credenciales para continuar</p>
                                     <div className="login-user">
                                         <label className="w-6rem">Tipo de rol</label><br/>
-                                            <TreeSelect value={selectedNodeKey} onChange={(e) => setSelectedNodeKey(e.value)} options={nodes} className="md:w-20rem w-full" placeholder="Selecciona tipo" required>
-                                            </TreeSelect>
+                                            <Dropdown
+                                            value={selectedNodeKey}
+                                             onChange={(e) => setSelectedNodeKey(e.value)}
+                                              options={nodes}
+                                              optionLabel='label'
+                                              optionValue='value'
+                                               className="md:w-20rem w-full" placeholder="Selecciona tipo" required>
+                                            </Dropdown>
                                     </div>
                                     <div className="login-user">
                                         <label className="w-6rem">Correo electronico</label>

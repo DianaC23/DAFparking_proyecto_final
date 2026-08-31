@@ -54,5 +54,23 @@ export const EspacioVehiculoService = {
             console.error("Error al guardar en espacioVehiculoService",error);
             throw error;
         }
-    }
+    },
+    //Liberar espacio
+    /*liberarEspacio:async(idEspacio)=>{
+        try {
+            const respuesta = await fetch(`${API_URL}/espacio/${placa}`,{
+                method: 'DELETE',
+                headers: {'Content-type':'application/json'}
+            });
+            if(!respuesta.ok){
+                const errorData =await respuesta.json();
+                throw new Error(errorData.mensaje || 'Error al eliminar el espacio')
+            }
+            return await respuesta.json();
+        } catch (error) {
+            console.error("Error en espacioVehiculoService", error);
+            throw error;
+            
+        }
+    }*/
 }

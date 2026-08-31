@@ -397,9 +397,7 @@ function PerfilUser(){
             {icon: "pi pi-car" ,label: 'Mis vehículos', command: ()=> setVistaActiva("vehiculos")},
             {icon: "pi pi-book" ,label:'Reservar espacio', command: ()=> setVistaActiva("espacios")},
             {icon:"pi pi-calendar" ,label:'Mis reservas', command: ()=> setVistaActiva("reservas")},
-            {icon: "pi pi-arrow-right-arrow-left" ,label:'Movimientos', command: ()=> setVistaActiva("movimientos")},
             {icon: "pi pi-dollar" ,label:'Tarifas', command: ()=> setVistaActiva("tarifas")},
-             {icon: "pi pi-wallet" ,label:'Pagos', command: ()=> setVistaActiva("pagos")},
             {icon: "pi pi-sign-out" ,label:'Cerrar sesión', command: handleLogout}
         ]
 
@@ -769,7 +767,7 @@ function PerfilUser(){
                                 </div>
                             ))}
                         </div>
-                    </div>
+                        </div>
                     </div> )}
                     {/**Mis reservas */}
                     {vistaActiva === "reservas" && (
@@ -793,11 +791,6 @@ function PerfilUser(){
                                     <Column field="createdAt" header="fecha de entrada" body={(rowData)=>rowData?.createdAt ? new Date (rowData.createdAt).toLocaleTimeString(): ''}  style={{padding:'30px'}}></Column>
                                 </DataTable> ) }
                         </div> )}
-                    {/**Movimientos */}
-                    {vistaActiva === "movimientos" && (
-                <div className="perfil-cliente">
-                    <h1>Aun no esta listo :3</h1>
-                    </div> )}
                     {/**tarifas */}
                     {vistaActiva === "tarifas" && (
                 <div className="perfil-cliente">
@@ -831,9 +824,6 @@ function PerfilUser(){
                     </Panel>  
                 </div>
                     </div> )}
-                    {/**pagos */}
-                    {vistaActiva === "pagos" && (
-                        <p>Por crear</p>)}
             </main>
             <footer>
                  <footer id='contacto'>
