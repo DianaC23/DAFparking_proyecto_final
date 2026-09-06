@@ -56,7 +56,7 @@ export const EspacioVehiculoService = {
         }
     },
     //Liberar espacio
-    /*liberarEspacio:async(idEspacio)=>{
+    liberarEspacioPorPlaca:async(placa)=>{
         try {
             const respuesta = await fetch(`${API_URL}/espacio/${placa}`,{
                 method: 'DELETE',
@@ -72,5 +72,21 @@ export const EspacioVehiculoService = {
             throw error;
             
         }
-    }*/
+    },
+    //Contar todo los espacios
+    consultarTodosLosEspacios: async () =>{
+        try {
+            const respuesta = await fetch(`${API_URL}/espacio`,{
+                method: 'GET',
+                headers: {'Content-Type': 'application/json'}
+            });
+            if (!respuesta.ok) {
+                throw new Error('Error al obtener todos los espacios');
+            }return await respuesta.json();
+        } catch (error) {
+            console.error("Error en consultarTodosLosEspacios", error);
+            throw error;
+        }
+    }
+    
 }

@@ -1,7 +1,7 @@
 //usestate
 import React, {useCallback, useEffect, useState} from "react";
 //Estilos propios
-import './perfil_user.css'
+import './perfil_trabajador.css';
 //estilos
 import 'primereact/resources/themes/lara-dark-green/theme.css';
 import 'primereact/resources/primereact.min.css';
@@ -10,8 +10,10 @@ import { useNavigate, useLocation } from "react-router-dom";
 import logo from '../assets/DAF_LOGO.png';
 import { EspacioVehiculoService } from "../services/EspacioService";
 import { Dialog } from "primereact/dialog";
+//Bitacora
+import Bitacora from "./bitacora.jsx";
 
-function PerfilColaborador({ irACalculadora }) {
+function PerfilColaborador() {
 //Estado inicial dinamico para recibir los datos
   const navigate = useNavigate();
   const location = useLocation();
@@ -24,8 +26,66 @@ function PerfilColaborador({ irACalculadora }) {
   //Espacios disponibles de los espacios
   const[vehiculo, setVehiculo] = useState('carro');
     const[espacio, setEspacio] = useState(false);
-    const[mostrarMapaModal, setMostrarMapaModal] = useState([]);
+    const[mostrarMapaModal, setMostrarMapaModal] = useState(false);
     const[espacioSeleccionado, setEspacioSeleccionado] = useState(null);
+  //Calculadora
+  const [mostrarCalculadoraModal, setMostrarCalculadoraModal] = useState(false);
+  //Estado para mostrar y ocultar bitacora
+  const [mostrarBitacoraModal, setMostrarBitacoraModal] = useState(false);
+  const [tipoVehiculo, setTipoVehiculo] = useState("");
+  const [horaEntrada, setHoraEntrada] = useState("");
+  const [horaSalida, setHoraSalida] = useState("");
+  const [resultado, setResultado] = useState(null);
+  const [errorCalculo, setErrorCalculo] = useState("");
+
+  const tarifas = {
+    bicicleta: 1500,
+    moto: 2000,
+    carro: 4000,
+    camioneta: 5000
+  }
+  //Lógica para procsar el cobro
+  const calcularTarifa = (event) =>{
+    event.preventDefault();
+    setErrorCalculo("");
+    setResultado(null);
+    if (!tipoVehiculo || !horaEntrada || !horaSalida) {
+      setErrorCalculo("Por favor completa todos los campos.");
+      return;
+    }
+  const [horaEntradaNumero, minutosEntrada] = horaEntrada.split(":").map(Number);
+  const [horaSalidaNumero, minutosSalida] = horaSalida.split(":").map(Number);
+
+  const entradaEnMinutos = horaEntradaNumero * 60 + minutosEntrada;
+  const salidaEnMinutos = horaSalidaNumero * 60 + minutosSalida;
+
+    if (salidaEnMinutos <= entradaEnMinutos) {
+      setErrorCalculo("La hora de salida debe ser posterior a la hora de entrada.");
+      return;
+    }
+    const diferenciaMinutos = salidaEnMinutos - entradaEnMinutos;
+    const horas = Math.ceil(diferenciaMinutos / 60);
+    const tarifaPorHora = tarifas[tipoVehiculo] || 0;
+    const total = horas * tarifaPorHora;
+
+    setResultado({horas, tarifaPorHora, total});
+  }
+  //Metodo de pago
+  const [metodoPago, setMetodoPago] = useState("efectivo");
+  const [placaVehiculo, setPlacaVehiculo] = useState("");
+   //Comprobante d pago
+    const [comprobantePago, setComprobantePago] = useState("");
+  //Limpiar formulario
+  const limpiarFormularioCalculadora = ()=> {
+    setTipoVehiculo("");
+    setHoraEntrada("");
+    setHoraSalida("");
+    setResultado(null);
+    setErrorCalculo("");
+    setPlacaVehiculo("");
+    setMetodoPago("efectivo");
+    setComprobantePago("");
+  };
     //Consulta los espacios
     const obtenerEspacios = useCallback( async() =>{
                     try {
@@ -46,7 +106,7 @@ useEffect(()=>{
   useEffect(()=>{
     if (!nombre) {
         alert("Sesión no válida");
-        navigate('/login');
+        navigate('/');
     }},[nombre, navigate]);
     const limite = 8;
         const espacioBackendA = (espacio || []).filter(e =>e.ubicacion?.includes('A'));
@@ -75,16 +135,7 @@ useEffect(()=>{
             }
             return {
                 numeroEspacio:numeroIdentificador,disponibilidad:false,ubicacion: `Fila B -${numeroIdentificador}`} });
-        //Calculo rapido para el boton de alerta sumatoria
-        const motosTotales =16;
-        const carrosTotales =16;
-        const camionTotales =16;
-        const bicicletaTotales =16;
-        const arregloEspaciosSeguro = Array.isArray(espacio) ? espacio : [];
-        const motosDisponibles = arregloEspaciosSeguro.filter(e =>e.tipoDeEspacio === 'moto' && !e.disponibilidad).length;
-        const carrosDisponibles = arregloEspaciosSeguro.filter(e =>e.tipoDeEspacio === 'carro' && !e.disponibilidad).length;
-        const camionesDisponibles = arregloEspaciosSeguro.filter(e =>e.tipoDeEspacio === 'camion' && !e.disponibilidad).length;
-        const bicicletasDisponibles = arregloEspaciosSeguro.filter(e =>e.tipoDeEspacio === 'bicicleta' && !e.disponibilidad).length;
+                //cerrar sesión
         const handleLogout = () =>{
         localStorage.clear();
         navigate('/login');
@@ -122,43 +173,28 @@ useEffect(()=>{
             </div>
           </div>
           <div className="calculadora-formulario" style={{ marginTop: "20px" }}>
-            <label style={{ fontWeight: "bold", fontSize: "16px", color: "#94fdff" }}>
+            <label style={{ fontWeight: "bold", fontSize: "16px", color: "#94fdff", textAlign:"center" }}>
               Panel de Operaciones del Parqueadero
             </label>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px", marginTop: "10px" }}>
+            <div style={{ display: "contents", gridTemplateColumns: "1fr 1fr", gap: "10px", marginTop: "10px" }}>
+              {/*Botón para calcular tarifa */}
               <button
                 type="button"
                 className="boton-calcular"
-                onClick={irACalculadora}
-                style={{ padding: "12px", fontSize: "14px", textAlign: "center" }}
-              >
+                onClick={() => setMostrarCalculadoraModal(true)}
+                style={{ padding: "12px", fontSize: "14px", textAlign: "center",  color:"#ffffff" }}>
                 🧮 Calcular Tarifa
               </button>
-              <button
-                type="button"
-                className="boton-limpiar"
-                onClick={() => setMostrarMapaModal(true)}
-                style={{ padding: "12px", fontSize: "14px", textAlign: "center" }}
-              >
+              <button type="button" className="boton-limpiar" onClick={() => setMostrarMapaModal(true)}
+               style={{ padding: "12px", fontSize: "14px", textAlign: "center" }}>
                 🚗 Gestionar Espacios
-                
-
               </button>
               <button
                 type="button"
-                className="boton-limpiar"
-                onClick={() => alert("Abriendo bitácora de novedades...")}
-                style={{ padding: "12px", fontSize: "14px", textAlign: "center" }}
-              >
+                className="boton-calcular"
+                onClick={() => setMostrarBitacoraModal(true)}
+                >
                 📝 Bitácora
-              </button>
-              <button
-                type="button"
-                className="boton-limpiar"
-                onClick={() => alert(`Disponibilidad actual:\n- Carros libres: ${carrosDisponibles} de ${carrosTotales}\n- Motos libres: ${motosDisponibles} de ${motosTotales}\n- Camiones libres: ${camionesDisponibles} de ${camionTotales}\n- Bicicleta libres: ${bicicletasDisponibles} de ${bicicletaTotales}`)}
-                style={{ padding: "12px", fontSize: "14px", textAlign: "center" }}
-              >
-                🚗 Consultar Disponibilidad
               </button>
               <button
                 type="button"
@@ -168,6 +204,113 @@ useEffect(()=>{
               </button>
             </div>
           </div>
+          {/**Mostrar bitacora */}
+          <Dialog visible={mostrarBitacoraModal} onHide={()=> setMostrarMapaModal(false)}
+            breakpoints={{'960px':'85vw', '641px':'100vw'}} style={{width:'50vw'}}
+            showHeader={false} contentStyle={{padding:0, backgroundColor: 'transparent',border:'none'}}>
+              <Bitacora volverAlPerfil={()=> setMostrarBitacoraModal(false)} usuarioActivo={nombre}/>
+          </Dialog>
+          {/*calcular tarifa emergente inicio */}
+          <Dialog header="Calculadora de Tarifa" visible={mostrarCalculadoraModal} onHide={()=> {setMostrarCalculadoraModal(false); limpiarFormularioCalculadora();}} modal style={{width:'450px'}}>
+            <div style = {{color: "white", padding: "10px"}}>
+              <form className="calculadora-formulario" onSubmit={calcularTarifa}>
+              <div className="campo" style={{marginBottom:"12px"}}>Tipo de vehículo
+                <select id="tipoVehiculo" value={tipoVehiculo} onChange={(e)=> setTipoVehiculo(e.target.value)} style={{width:"100%",padding:"10px",borderRadius: "5px", color: "#000"}}>
+                  <option value="">Selecciona un vehículo</option>
+                  <option value="bicicleta">Bicicleta</option>
+                  <option value="moto">Moto</option>
+                  <option value="carro">Carro</option>
+                  <option value="camioneta">Camioneta</option>
+                </select></div>
+                  <div className="campo" style={{marginBottom:"12px"}}>
+                    Hora de entrada
+                    <input id="horaEntrada" type="time" value={horaEntrada} onChange={(e)=> setHoraEntrada(e.target.value)}
+                    style={{width:"100%",padding:"10px",borderRadius:"5px",color:"#000"}} />
+                    </div>
+                  <div className="campo" style={{marginBottom:"15px"}}>
+                    Hora de salida
+                    <input id="horaSalida" type="time" value={horaSalida} onChange={(e)=>setHoraSalida(e.target.value)} style={{width:"100%",padding:"10px",borderRadius:"5px",color:"#000"}}/>
+                    </div>
+                    {errorCalculo&&(
+                      <div className="mensaje-error" style={{color:"#ff8d8d", marginBottom: "10px", fontWeight:"bold"}}>
+                        {errorCalculo}</div>
+                    )}
+                    <div style={{display:"flex", gap: "10px"}}>
+                      <button type="submit" className="boton-calcular" style={{flex:1,padding:"10px"}}>Calcular tarifa</button>
+                      <button type="button" className="boton-limpiar" onClick={limpiarFormularioCalculadora} style={{flex:1, padding:"10px"}}>Limpiar</button>
+                      </div>
+                      {resultado &&(
+                        <div className="calculadora-resultado" style={{marginTop:"20px", padding:"15px",backgroundColor:"#00282a",borderRadius:"8px"}}>
+                          <h3 style={{marginTop:0, textAlign: "center", color: "#94fdff"}}>Resultado</h3>
+                          <div className="resultado-dato" style={{display:"flex",justifyContent:"space-between",marginBottom:"8px"}}>
+                          <span> Tiempo:</span>
+                          <span>{resultado.horas} hora(s)</span></div>
+                          <div className="resultado-dato" style={{display:"flex", justifyContent:"space-between", marginBottom:"8px"}}>
+                           <span> Tarifa x Hora:</span>
+                            <span>${resultado.tarifaPorHora.toLocaleString("es-CO")}</span>
+                           </div>
+                        <div style={{display:"flex", justifyContent:"space-between", borderTop:"1px solid #19545b", paddingTop:"8px", fontSize:"17px"}}>
+                          Total:
+                          <strong style={{color:"#94fdff"}}>${resultado.total.toLocaleString("es-CO")}</strong>
+                        </div>
+                        {/*Botón pago */}
+                        <div className="campo" style={{marginBottom:"12px"}}>
+                          <label htmlFor="placaVehiculo" style={{fontSize:"14px"}}>Placa</label>
+                          <input type="text" id="placaVehiculo" placeholder="Ej: ABC123" value={placaVehiculo}
+                          onChange={(e)=> setPlacaVehiculo(e.target.value.toUpperCase())} style={{width:"100%", padding:"10px", borderRadius: "5px", color: "#000", marginTop:"5px", boxSizing:"border-box"}} />
+                        </div>
+                        {/*Selector Método de pago */}
+                        <div className="campo" style={{marginBottom:"12px"}}>
+                          <label htmlFor="metodoPago" style={{fontSize:"14px"}}>Método de pago</label>
+                          <select id="metodoPago" value={metodoPago} onChange={(e)=> {setMetodoPago(e.target.value); setComprobantePago("");}} style={{width:"100%", padding: "10px",borderRadius: "5px", color:"#000", marginTop:"15px"}}>
+                            <option value="efectivo">Efectivo</option>
+                            <option value="tarjeta">Tarjeta</option>
+                            <option value="transferencia">Transferencia bancaria</option>
+                          </select>
+                        </div>
+                        {/**Tarjeta o transferencia */}
+                        {metodoPago !== "efectivo" &&(
+                          <div className="campo" style={{marginBottom:"20px"}}>
+                            <label htmlFor="comprobantePago" style={{fontSize:"14px"}}>
+                              {metodoPago === "tarjeta" ? "ultimos 4 dígitos":"Número de comprobante: "}</label>
+                            <input type="text" id="comprobantePago" placeholder={metodoPago === "tarjeta" ? "Ej:123" : "Ej: 1234567"}
+                            onChange={(e)=> setComprobantePago(e.target.value)}
+                            style={{width:"100%", padding:"10px", borderRadius: "5px", color: "#000", marginTop: "5px", boxSizing:"border-box"}} />
+                          </div>
+                        )} 
+                        {/*Botón finalizar la validación */}
+                        <div style={{marginTop:"15px"}}>
+                          <button type="button" className="boton-calcular" style={{width: "100%", padding:"10px", fontWeight:"bold"}}
+                          onClick={async()=>{
+                            if(!placaVehiculo.trim()){
+                              alert("Por favor ingresa la placa del vehículo");
+                              return;
+                            }
+                            if (metodoPago !== "efectivo" && !comprobantePago.trim()) {
+                              alert(`Por favor ingresa el número de referencia para el pago con ${metodoPago === "tarjeta" ? "Tarjeta" : "transferencia"}`);
+                              return;
+                            }
+                            try{
+                              //Llama al service
+                              await EspacioVehiculoService.liberarEspacioPorPlaca(placaVehiculo);
+                              alert(`¡Pago de $${resultado.total.toLocaleString("es-CO")} recibido con éxito(${metodoPago.toUpperCase()})!\n${comprobantePago ? `Comprobante: ${comprobantePago}\n`: ''}\nEl vehículo con placa ${placaVehiculo} ha sido retirado`);
+
+                              setMostrarCalculadoraModal(false);
+                              limpiarFormularioCalculadora();
+                              //Refresca el mapa
+                              obtenerEspacios();
+                            } catch(error){
+                              console.error("Error al procesar el pago y liberación: ", error);
+                              alert(`No se pudo liberar el espacio: ${error.message}. Verifica si la placa existe en el sistema.`);
+                            }
+                          }}>Regístrar pago y liberar espacio</button>
+                        </div>                
+                        </div>
+                    )}
+              </form>
+              </div>
+          </Dialog>
+          {/*calcular tarifa emergente final*/}
           {/*Modal emergente */}
           <Dialog header = "Mapa de ocupación" visible={mostrarMapaModal} onHide={()=> setMostrarMapaModal(false)} modal>
                 <div className="mapa-parqueadero">
@@ -212,9 +355,7 @@ useEffect(()=>{
           </Dialog>
         </div>
       </div>
-    </div></div>
-    
+    </div></div> 
   );
 }
-
 export default PerfilColaborador;

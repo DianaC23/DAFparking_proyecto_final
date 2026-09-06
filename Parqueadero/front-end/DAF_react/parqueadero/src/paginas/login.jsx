@@ -106,8 +106,24 @@ function Login(){
             console.log('Datos enviados: ', {selectedNodeKey,email,contrasena});
             navigate('/perfil_trabajador');
         }else if(selectedNodeKey === '0'){
-            console.log("Rol administrador encontrado");
-            navigate('/page404');
+            try {
+                console.log("Intentado ingresar con: ", email);
+                const empleado = await EmpleadoService.datosEmpleado(email,contrasena);
+                if(empleado){
+                    console.log("Login exitoso", empleado);
+                    localStorage.setItem('nombreTrabajador', empleado.nombre || "Empleado sin nombre");
+                    localStorage.setItem('rolTrabajador', empleado.rol || "Operador");
+                    localStorage.setItem('documentoTrabajador', empleado.documento || "No registra");
+                    localStorage.setItem('turnoTrabajador', empleado.turno || "No asignado");
+                    navigate('/perfil_gerente', {state: {empleado}});
+                }
+            } catch (error) {
+                console.error("Error en autenticación;",error.message);
+                alert("Error al iniciar sesión" + error.message);
+            }
+            //Conexión con base  de datos
+            console.log('Datos enviados: ', {selectedNodeKey,email,contrasena});
+            navigate('/perfil_gerente');
         }else{
             console.error("Rol no reconocido");
         }};

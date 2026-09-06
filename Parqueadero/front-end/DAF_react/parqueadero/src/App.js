@@ -6,6 +6,8 @@ import Inicio from './paginas/inicio';
 import Login from './paginas/login';
 import PerfilUser from './paginas/perfil_user';
 import PerfilColaborador from './paginas/perfil_trabajador';
+import Bitacora from './paginas/bitacora';
+import PerfilGerente from './paginas/perfil_gerente';
 import Registrarse from './paginas/registrarse';
 import Pagina404 from './paginas/page404';
 function App(){
@@ -16,9 +18,11 @@ function App(){
         <Route path='/login' element={<Login/>}/>
         <Route path='/perfil_user' element={<PerfilUser/>}/>
         <Route path= '/perfil_trabajador' element={<PerfilColaborador/>}/>
+        <Route path='/calcular_tarifa' element={<calcular_tarifa/>}/>
+        <Route path='/bitacora' element={<Bitacora/>}/>
+        <Route path='/perfil_gerente' element={<PerfilGerente/>}/>
         <Route path='/registrarse' element={<Registrarse/>}/>
         <Route path='/page404' element={<Pagina404/>}/>
-
           </Routes> 
     </BrowserRouter>
    
