@@ -1,0 +1,9 @@
+Link de GitHub:
+https://github.com/DianaC23/DAFparking_proyecto_final
+
+IMPORTAR BASE DE DATOS:
+1. Crear una base de datos local en Mongodb compass llamada login_node.
+2. Crear las colecciones: clientes, disponibilidads(no es un error de escritura, asi lo escribimos), empleados, espacios,movimientos, tarifas, tipovehiculo y tarifa.
+3. Entre a cada colección, haga clic en el botón Import Data, seleccione el archivo JSON correspondiente desde la carpeta back-end/API/base_datos e importelos.
+	
+

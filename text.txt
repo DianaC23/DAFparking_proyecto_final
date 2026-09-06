@@ -1,9 +1,0 @@
-Link de GitHub:
-https://github.com/DianaC23/DAFparking_proyecto_final
-Cambios:
--Se agrego pagina 404.
--La cuenta del cliente:
--Pagina de inicio
--pagina de registro de usuario
-	
-
