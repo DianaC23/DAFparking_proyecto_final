@@ -1,0 +1,112 @@
+[{
+  "_id": {
+    "$oid": "6a729cf96ee73a86f8b4e17c"
+  },
+  "documento": 1020304050,
+  "placa": "ABC123",
+  "espacio": "Fila A - A1",
+  "valor_pagado": 5000,
+  "rol": "Entrada",
+  "createdAt": {
+    "$date": "2026-08-05T02:16:25.334Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-05T02:16:25.334Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6a72a641dc9dab0cf908d6bf"
+  },
+  "documento": 1020304050,
+  "placa": "XYZ45D",
+  "espacio": "Fila A - A3",
+  "valor_pagado": 2000,
+  "rol": "Entrada",
+  "createdAt": {
+    "$date": "2026-08-05T02:56:01.157Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-05T02:56:01.157Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6a72b46d3790246077cba8c2"
+  },
+  "documento": 1020304050,
+  "placa": "ABC123",
+  "espacio": "Fila A - A2",
+  "valor_pagado": 5000,
+  "rol": "Entrada",
+  "createdAt": {
+    "$date": "2026-08-05T03:56:29.088Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-05T03:56:29.088Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6a9b3b2b7630f96d7bfaae0e"
+  },
+  "documento": 1020304050,
+  "placa": "HOL123",
+  "espacio": "Fila A - A5",
+  "valor_pagado": 2000,
+  "rol": "Entrada",
+  "createdAt": {
+    "$date": "2026-09-04T21:42:03.869Z"
+  },
+  "updatedAt": {
+    "$date": "2026-09-04T21:42:03.869Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6a9b57b87630f96d7bfaaeab"
+  },
+  "documento": 1020304050,
+  "placa": "HOL123",
+  "espacio": "Fila A - A3",
+  "valor_pagado": 2000,
+  "rol": "Entrada",
+  "createdAt": {
+    "$date": "2026-09-04T23:43:52.569Z"
+  },
+  "updatedAt": {
+    "$date": "2026-09-04T23:43:52.569Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6a9b58cc7630f96d7bfaaec3"
+  },
+  "documento": 1020304050,
+  "placa": "HOL123",
+  "espacio": "Fila A - A5",
+  "valor_pagado": 2000,
+  "rol": "Entrada",
+  "createdAt": {
+    "$date": "2026-09-04T23:48:28.186Z"
+  },
+  "updatedAt": {
+    "$date": "2026-09-04T23:48:28.186Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6a9b7a5238f970bf93637940"
+  },
+  "documento": 1020304050,
+  "placa": "XYZ45D",
+  "espacio": "Fila A - A3",
+  "valor_pagado": 2000,
+  "rol": "Entrada",
+  "createdAt": {
+    "$date": "2026-09-05T02:11:30.592Z"
+  },
+  "updatedAt": {
+    "$date": "2026-09-05T02:11:30.592Z"
+  }
+}]

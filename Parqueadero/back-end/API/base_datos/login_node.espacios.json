@@ -1,0 +1,72 @@
+[{
+  "_id": {
+    "$oid": "6a72817fdab74c4b7eaf2b3d"
+  },
+  "documento": 1020304050,
+  "nombre": "Eduardo",
+  "tipoDeEspacio": "carro",
+  "ubicacion": "Fila A - A2",
+  "capacidad": 1,
+  "disponibilidad": true,
+  "placa": "ABC123",
+  "createdAt": {
+    "$date": "2026-08-05T00:19:11.420Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-05T03:56:29.071Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6a72860c8fb299b7681ab166"
+  },
+  "documento": 1020304050,
+  "nombre": "Eduardo",
+  "tipoDeEspacio": "carro",
+  "ubicacion": "Fila A - A4",
+  "capacidad": 1,
+  "disponibilidad": false,
+  "placa": "ABC123",
+  "createdAt": {
+    "$date": "2026-08-05T00:38:36.666Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-05T00:38:36.666Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6a728b4b106a8fbc0fcf06dd"
+  },
+  "documento": 1020304050,
+  "nombre": "Eduardo",
+  "tipoDeEspacio": "camion",
+  "ubicacion": "Fila A - A2",
+  "capacidad": 1,
+  "disponibilidad": false,
+  "placa": "JKL788",
+  "createdAt": {
+    "$date": "2026-08-05T01:00:59.583Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-05T01:00:59.583Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6a9b58cc809f1f7ce973f37d"
+  },
+  "ubicacion": "Fila A - A5",
+  "capacidad": 1,
+  "createdAt": {
+    "$date": "2026-09-04T23:48:28.183Z"
+  },
+  "disponibilidad": true,
+  "documento": 1020304050,
+  "nombre": "Eduardo",
+  "placa": "HOL123",
+  "tipoDeEspacio": "moto",
+  "updatedAt": {
+    "$date": "2026-09-04T23:48:28.183Z"
+  }
+}]

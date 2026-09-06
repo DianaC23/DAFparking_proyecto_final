@@ -1,0 +1,15 @@
+[{
+  "_id": {
+    "$oid": "6a1cb700be9319947c6c92c1"
+  },
+  "placa": "KMS842",
+  "tipoVehiculo": "carro",
+  "valor_pagado": 12000,
+  "metodo_pago": "tarjeta",
+  "createdAt": {
+    "$date": "2026-05-31T22:32:32.431Z"
+  },
+  "updatedAt": {
+    "$date": "2026-05-31T22:32:32.431Z"
+  }
+}]

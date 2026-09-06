@@ -1,0 +1,134 @@
+[{
+  "_id": {
+    "$oid": "6a1b7b044139b927b8cd6a0d"
+  },
+  "placa": "KRT456",
+  "marca": "Yamaha",
+  "modelo": "2024",
+  "color": "Negro",
+  "documento": "10304050",
+  "createdAt": {
+    "$date": "2026-05-31T00:04:20.180Z"
+  },
+  "updatedAt": {
+    "$date": "2026-05-31T00:04:20.180Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6a1cb207be9319947c6c9295"
+  },
+  "placa": "KMS842",
+  "marca": "Mazda",
+  "modelo": "Mazda 2024",
+  "color": "Gris Metálico",
+  "documento": 1020304055,
+  "createdAt": {
+    "$date": "2026-05-31T22:11:19.502Z"
+  },
+  "updatedAt": {
+    "$date": "2026-06-27T02:44:42.867Z"
+  },
+  "tipo": "Carro"
+},
+{
+  "_id": {
+    "$oid": "6a1cb674be9319947c6c92b9"
+  },
+  "placa": "KMS842",
+  "marca": "Mazda",
+  "modelo": "Mazda 3 2024",
+  "color": "Gris Metálico",
+  "documento": "1020304055",
+  "createdAt": {
+    "$date": "2026-05-31T22:30:12.001Z"
+  },
+  "updatedAt": {
+    "$date": "2026-05-31T22:30:12.001Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6a3f3a2ebc7f8fe9a2e50a95"
+  },
+  "tipo": "Carro",
+  "placa": "ABC123",
+  "marca": "Toyota",
+  "modelo": "2014",
+  "color": "Blanco",
+  "documento": 1020304050,
+  "createdAt": {
+    "$date": "2026-06-27T02:49:18.582Z"
+  },
+  "updatedAt": {
+    "$date": "2026-07-01T02:49:31.330Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6a3f3a2ebc7f8fe9a2e50a96"
+  },
+  "tipo": "Moto",
+  "placa": "XYZ45D",
+  "marca": "Yamaha",
+  "modelo": "2020",
+  "color": "Negro",
+  "documento": 1020304050,
+  "createdAt": {
+    "$date": "2026-06-27T02:49:18.582Z"
+  },
+  "updatedAt": {
+    "$date": "2026-07-02T00:35:34.070Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6a3f3a2ebc7f8fe9a2e50a97"
+  },
+  "tipo": "Camioneta",
+  "placa": "JKL789",
+  "marca": "Chevrolet",
+  "modelo": "Tracker",
+  "color": "Gris",
+  "documento": 1020304050,
+  "createdAt": {
+    "$date": "2026-06-27T02:49:18.582Z"
+  },
+  "updatedAt": {
+    "$date": "2026-06-27T02:49:18.582Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6a40822a76a4f453f58695f7"
+  },
+  "tipo": "Moto",
+  "placa": "JUN026",
+  "marca": "HONDA",
+  "modelo": "2026",
+  "color": "ROJO",
+  "documento": 1020304055,
+  "createdAt": {
+    "$date": "2026-06-28T02:08:42.982Z"
+  },
+  "updatedAt": {
+    "$date": "2026-06-28T02:08:42.982Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6a45b21d8374a1e1338f03bc"
+  },
+  "tipo": "Moto",
+  "placa": "HOL123",
+  "marca": "Zuzuki",
+  "modelo": "2025",
+  "color": "Azul",
+  "documento": 1020304050,
+  "createdAt": {
+    "$date": "2026-07-02T00:34:37.513Z"
+  },
+  "updatedAt": {
+    "$date": "2026-07-02T00:35:03.777Z"
+  }
+}]

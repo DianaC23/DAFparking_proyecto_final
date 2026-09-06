@@ -1,0 +1,61 @@
+[{
+  "_id": {
+    "$oid": "6a1b077b46d6ad9c06eef564"
+  },
+  "nombre": "Diana",
+  "apellido": "Cruz",
+  "documento": "1087654321",
+  "telefono": "3104567890",
+  "correo_electronico": "diana.cruz@example.com",
+  "direccion": "Calle 15 #20-35, Pereira",
+  "contrasena": "Diana2026*",
+  "rol": "administrador",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a1b0fb646d6ad9c06eef568"
+  },
+  "nombre": "Laura",
+  "apellido": "Martinez",
+  "documento": "1002345678",
+  "telefono": "3115678902",
+  "correo_electronico": "laura.martinez@parqueadero.com",
+  "direccion": "Calle 18 #10-45, Pereira",
+  "contrasena": "Laura123*",
+  "rol": "trabajador",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a1b0fc446d6ad9c06eef56a"
+  },
+  "nombre": "Andres",
+  "apellido": "Gomez",
+  "documento": "1003456789",
+  "telefono": "3126789013",
+  "correo_electronico": "andres.gomez@parqueadero.com",
+  "direccion": "Avenida 30 #25-60, Pereira",
+  "contrasena": "Andres123*",
+  "rol": "trabajador",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a1cb569be9319947c6c92ae"
+  },
+  "nombre": "Sofía",
+  "apellido": "Martínez",
+  "documento": "1055544433",
+  "telefono": 3204441122,
+  "correo_electronico": "sofia.worker@empresa.com",
+  "direccion": "Transversal 15 # 78-45, Medellín",
+  "contrasena": "Sofi_Work_9988*",
+  "rol": "trabajador",
+  "createdAt": {
+    "$date": "2026-05-31T22:25:45.454Z"
+  },
+  "updatedAt": {
+    "$date": "2026-05-31T22:25:45.454Z"
+  }
+}]

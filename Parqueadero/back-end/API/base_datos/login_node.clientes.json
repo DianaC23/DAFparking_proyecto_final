@@ -1,0 +1,131 @@
+[{
+  "_id": {
+    "$oid": "6a1a358a5448493ce2768022"
+  },
+  "nombre": "Ana Jimena",
+  "apellido": "Martinez",
+  "documento": 10304050,
+  "telefono": 312453126102787900,
+  "correo_electronico": "jimemar@correo.com",
+  "direccion": "Calle 456 #14-51 Agua Azul",
+  "contrasena": "jime123",
+  "__v": 0,
+  "rol": "cliente",
+  "updatedAt": {
+    "$date": "2026-06-27T00:07:04.887Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6a1a4c6aaa9476f82b76bc68"
+  },
+  "nombre": "Carlos",
+  "apellido": "Mendoza",
+  "documento": "10405060",
+  "telefono": "3154445566",
+  "correo_electronico": "carlosmen@correo.com",
+  "direccion": "Avenida 19 #5-20 Centro",
+  "contrasena": "carlos2026",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a1a4c77aa9476f82b76bc6a"
+  },
+  "nombre": "Andrea",
+  "apellido": "Restrepo",
+  "documento": "10506070",
+  "telefono": "3108889911",
+  "correo_electronico": "andre_res@correo.com",
+  "direccion": "Carrera 8 #45-12 El Poblado",
+  "contrasena": "andrea987",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a1b03479fb02e7f09c4b7fe"
+  },
+  "nombre": "Diana",
+  "apellido": "Cruz",
+  "documento": "1087654321",
+  "telefono": "3104567890",
+  "correo_electronico": "diana.cruz@example.com",
+  "direccion": "Calle 15 #20-35, Pereira",
+  "contrasena": "Diana2026*",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a1c90a79ed7aa51f11b34de"
+  },
+  "nombre": "Santiago Alejandro",
+  "apellido": "Ramírez Bermúdez",
+  "documento": 1054321098,
+  "telefono": 3127654321,
+  "correo_electronico": "santiago.ramirez@mail.com",
+  "direccion": "Carrera 8 # 23-45, Conjunto Residencial Los Álamos",
+  "contrasena": "M1Parqueadero2026$",
+  "createdAt": {
+    "$date": "2026-05-31T19:48:55.972Z"
+  },
+  "updatedAt": {
+    "$date": "2026-05-31T19:48:55.972Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6a1cb4bbbe9319947c6c92a8"
+  },
+  "nombre": "Laura",
+  "apellido": "Bermúdez",
+  "documento": 1020304055,
+  "telefono": 3219998877,
+  "correo_electronico": "laura.bermudez@email.com",
+  "direccion": "Calle 80 # 11-45, Bogotá",
+  "contrasena": null,
+  "createdAt": {
+    "$date": "2026-05-31T22:22:51.356Z"
+  },
+  "updatedAt": {
+    "$date": "2026-06-27T22:28:08.182Z"
+  },
+  "rol": "cliente"
+},
+{
+  "_id": {
+    "$oid": "6a2a2334963a7e84ce3e3a3b"
+  },
+  "nombre": "Eduardo",
+  "apellido": "Zapata",
+  "documento": 1020304050,
+  "telefono": 3124567890,
+  "correo_electronico": "eduard@mail.com",
+  "direccion": "Calle 45 #12-34, Medellín",
+  "contrasena": "eddi123",
+  "rol": "cliente",
+  "createdAt": {
+    "$date": "2026-06-11T02:53:40.142Z"
+  },
+  "updatedAt": {
+    "$date": "2026-06-27T00:05:04.485Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6a862a505d699db272baec41"
+  },
+  "nombre": "Albert",
+  "apellido": "Rios",
+  "documento": 123456,
+  "telefono": 1122334455,
+  "correo_electronico": "albert1@gmail.com",
+  "direccion": "santa Teresa casa 2-3",
+  "contrasena": "albert1",
+  "rol": "cliente",
+  "createdAt": {
+    "$date": "2026-08-19T22:12:32.500Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-19T22:12:32.500Z"
+  }
+}]
