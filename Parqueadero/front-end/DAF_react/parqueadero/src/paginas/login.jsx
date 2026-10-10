@@ -49,6 +49,7 @@ function Login(){
         data: 'admin',
         icon: 'pi pi-fw pi-cog'
     },
+    
     {
         label: 'Trabajador',
         value: '1',
@@ -60,8 +61,16 @@ function Login(){
         value: '2',
         data:'cliente',
         icon: 'pi pi-fw pi-user'
-    }
+    },
+    
     ])
+    //Pruueba para crear rama
+    const handleLimpiarFormulario = () => {
+        setSelectedNodeKey(null);
+        setEmail('');
+        setContrasena('');
+    };
+
     //Funcion para procesar el Login y hara la redirección
     const handleLogin = async (e) =>{
         e.preventDefault();//Evita recargar la pagina
@@ -166,13 +175,23 @@ function Login(){
                                     </div>
                                     <div className="login-user">
                                         <label className="w-6rem">Correo electronico</label>
-                                        <InputText id="username" type="email" className="w-12rem" onChange={(e) => setEmail(e.target.value)}required/>
+                                        <InputText id="username" type="email" className="w-12rem" value={email} onChange={(e) => setEmail(e.target.value)}required/>
                                     </div>
                                     <div className="login-user">
                                         <label className="w-6rem">Password</label>
                                         <Password value={contrasena} onChange={(e) => setContrasena(e.target.value)} toggleMask feedback={false} required />
                                     </div>
                                     <Button type="submit" label='Login' icon="pi pi-user" className="w-10rem mx-auto"></Button>
+                                    
+                                    <Button
+                                        type="button"
+                                        label="Limpiar campos"
+                                        icon="pi pi-refresh"
+                                        className="w-10rem mx-auto"
+                                        outlined
+                                        onClick={handleLimpiarFormulario}
+                                    />
+
                                 </form>
                                 
                             </div>
